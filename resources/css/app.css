@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html { -webkit-text-size-adjust: 100%; }
+    body { @apply bg-paper text-ink font-sans text-[15px] leading-snug; }
+    a { @apply text-link; }
+    h1, h2, p, dl, dd, ol, ul { margin: 0; }
+    ol, ul { padding: 0; list-style: none; }
+    :focus-visible { outline: 3px solid #1B4F86; outline-offset: 2px; }
+    [x-cloak] { display: none !important; }
+}
+
+@layer components {
+    /* tombol */
+    .btn { @apply inline-flex h-10 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[#BDBAB0] bg-white px-3.5 text-sm text-ink no-underline hover:bg-[#F4F3EF]; }
+    .btn-p { @apply border-ink bg-ink font-medium text-white hover:bg-[#34382F]; }
+    .btn-o { @apply border-ink font-medium; }
+    .btn-lg { @apply h-12 px-5 text-base font-semibold; }
+    .btn[disabled], .btn.off { @apply pointer-events-none border-[#D6D3C8] bg-white text-[#8A8D84]; }
+    .btn-p[disabled] { @apply border-[#8A8D84] bg-[#8A8D84] text-white; }
+    .btn-link { @apply h-10 cursor-pointer border-0 bg-transparent px-2.5 text-sm text-link underline; }
+    .lnk { @apply inline-flex min-h-[40px] items-center font-semibold text-link; }
+
+    /* kartu & formulir */
+    .card { @apply rounded-lg border border-line bg-white px-5 py-4; }
+    .card h2 { @apply text-[17px] font-semibold; }
+    .inp { @apply h-11 rounded-md border border-[#BDBAB0] bg-white px-3 text-[15px] text-ink; }
+    .inp.bad { @apply border-2 border-alert; }
+    .fl { @apply flex flex-col gap-1 text-[13px] text-body; }
+    .ferr { @apply text-sm font-semibold text-alert; }
+    .filters { @apply flex flex-wrap items-end gap-3 rounded-lg border border-line bg-white px-3.5 py-3; }
+    .seg { @apply flex overflow-hidden rounded-md border border-[#BDBAB0]; }
+    .seg a { @apply flex h-[42px] items-center border-l border-[#BDBAB0] bg-white px-3.5 text-sm text-ink no-underline first:border-l-0; }
+    .seg a[aria-current="true"] { @apply bg-ink font-medium text-white; }
+    .badge { @apply rounded-full bg-[#ECE9DD] px-2.5 py-1 text-xs font-medium text-[#5B5636]; }
+    .note { @apply rounded-md border border-ink p-3.5 text-[15px] leading-normal; }
+    .chk { @apply flex min-h-[40px] items-center gap-2.5 text-[15px]; }
+    .chk input { @apply h-5 w-5; }
+
+    /* tabel */
+    table.t { @apply w-full border-collapse text-[15px]; }
+    .t th { @apply whitespace-nowrap border-b border-[#BDBAB0] bg-[#F4F3EF] px-3 py-2.5 text-left text-[13px] font-semibold text-body; }
+    .t td { @apply border-b border-[#DAD8D0] px-3 py-3 align-middle; }
+    .t th.r, .t td.r { @apply text-right; }
+    .t td.act { @apply whitespace-nowrap py-1.5; }
+    .t .sm { @apply mt-0.5 text-sm text-[#4A4D46]; }
+    .t tr.b td { @apply border-b-ink font-semibold; }
+    .t tr.tt td { @apply bg-[#F4F3EF] text-base font-semibold; }
+    .t tfoot td { @apply border-t-2 border-t-ink bg-[#F4F3EF] font-semibold; }
+    .num { @apply font-mono text-sm; }
+    .alert-t { @apply inline-flex items-center gap-1.5 font-semibold text-alert; }
+    .ok-t { @apply inline-flex items-center gap-1.5 font-semibold; }
+    .muted { @apply text-sm text-body; }
+
+    /* paginasi */
+    .pgin { @apply h-10 w-16 rounded-md border border-ink bg-white text-center font-mono text-base; }
+
+    /* kartu angka */
+    .kpi { @apply rounded-lg border border-line bg-white px-5 py-4; }
+    .kpi .l { @apply flex items-center gap-1.5 text-[13px] text-muted; }
+    .kpi .v { @apply mt-1.5 font-mono text-3xl font-medium; }
+    .kpi .s { @apply mt-1 text-[13px] text-body; }
+
+    /* menu samping */
+    .nav-a { @apply flex min-h-[44px] w-full cursor-pointer items-center gap-2.5 rounded-md border-0 bg-transparent px-2.5 text-left text-sm text-[#D5DACE] no-underline hover:bg-side-hover hover:text-white; }
+    .nav-a.on { @apply bg-side-on font-semibold text-white; }
+
+    /* langkah proses */
+    .steps li { @apply flex flex-[1_1_160px] items-center gap-2.5 rounded-lg border border-line bg-white px-3 py-2.5 text-sm font-medium; }
+    .steps li.cur { @apply border-ink bg-ink text-white; }
+    .dot { @apply flex h-6 w-6 flex-none items-center justify-center rounded-full text-xs font-semibold; }
+    .dot.done { @apply bg-ink text-white; }
+    .dot.now { @apply bg-white text-ink; }
+    .dot.next { @apply border-2 border-[#C9C6BA] text-muted; }
+
+    /* slip gaji */
+    .slip { @apply min-w-0 max-w-[680px] rounded border border-line bg-white px-9 py-8 shadow-[0_1px_2px_rgba(28,31,26,.06),0_6px_20px_rgba(28,31,26,.06)]; }
+    .slip-meta { @apply my-4 mb-[18px] grid grid-cols-2 gap-x-6 gap-y-1.5 text-[13px]; }
+    .slip-meta div { @apply flex gap-2; }
+    .slip-meta dt { @apply w-[104px] flex-none text-muted; }
+    .slip-cols h2 { @apply mb-1.5 text-xs font-semibold tracking-[.08em] text-muted; }
+    .slip-cols table { @apply w-full border-collapse text-[13px]; }
+    .slip-cols td { @apply border-b border-dotted border-[#D6D3C8] py-[5px]; }
+    .slip-cols td:last-child { @apply text-right font-mono; }
+    .slip-cols tr.tot td { @apply border-b-0 pt-2 font-semibold; }
+
+    /* tampilan "lega" untuk pengguna yang lebih sepuh */
+    .lega table.t { @apply text-[17px]; }
+    .lega .t td { @apply py-4; }
+    .lega .t th { @apply text-sm; }
+    .lega .btn { @apply h-[46px] text-base; }
+    .lega .nav-a { @apply text-base; }
+    .lega .inp { @apply h-12 text-[17px]; }
+}
+
+@media print {
+    body { background: #fff; }
+    .no-print { display: none !important; }
+    .print-only { display: block !important; }
+    .pb { break-after: page; page-break-after: always; }
+    .pb:last-child { break-after: auto; page-break-after: auto; }
+    .slip { max-width: none; border: 0; box-shadow: none; padding: 0; }
+}
