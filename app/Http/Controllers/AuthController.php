@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
-/** Login PROTOTIPE: nama pengguna & kata sandi apa saja. Ganti dengan autentikasi sungguhan. */
 class AuthController extends Controller
 {
     public function create()
@@ -21,15 +22,21 @@ class AuthController extends Controller
             'pengguna.required' => 'Isi nama pengguna.',
             'sandi.required' => 'Isi kata sandi.',
         ]);
-        $request->session()->regenerate();
-        $request->session()->put('demo_user', $data['pengguna']);
 
-        return redirect()->route('dasbor');
+        // Pesan galatnya sama untuk pengguna tak dikenal, sandi salah, dan akun nonaktif.
+        if (! Auth::attempt(['username' => $data['pengguna'], 'password' => $data['sandi'], 'aktif' => true])) {
+            throw ValidationException::withMessages(['sandi' => 'Nama pengguna atau kata sandi salah.']);
+        }
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('dasbor'));
     }
 
     public function destroy(Request $request)
     {
-        $request->session()->forget('demo_user');
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect()->route('masuk');
     }

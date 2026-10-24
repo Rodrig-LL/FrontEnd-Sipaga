@@ -3,23 +3,20 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
-     * Seed the application's database.
+     * Pengguna contoh hanya untuk pengembangan lokal. Di server, buat pengguna dengan
+     * `php artisan sipaga:pengguna` supaya kata sandinya tidak tertulis di kode.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        if (! app()->environment('local')) return;
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ([['admin', 'Admin SIPAGA', 'admin'], ['jurubayar', 'Juru Bayar', 'juru_bayar'], ['operator', 'Operator', 'operator']] as [$u, $nama, $peran]) {
+            User::updateOrCreate(['username' => $u], ['name' => $nama, 'role' => $peran, 'aktif' => true, 'password' => 'password']);
+        }
     }
 }
