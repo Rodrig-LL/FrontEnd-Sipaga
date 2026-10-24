@@ -1,7 +1,7 @@
 {{-- Kotak cari + pilihan jenis + status. Wajib: $q, $jenis, $status, $jumlah, $opsi [[nilai, label]] --}}
 <section class="filters" aria-label="Saring daftar">
     <form method="get" class="flex flex-1 flex-wrap items-end gap-3">
-        <input type="hidden" name="jenis" value="{{ $jenis }}">
+        @isset($jenis)<input type="hidden" name="jenis" value="{{ $jenis }}">@endisset
         <label class="fl min-w-[220px] flex-1">Cari
             <input class="inp" type="search" name="q" value="{{ $q }}" placeholder="Nama, NRP, atau NIP" autocomplete="off">
         </label>
@@ -14,6 +14,7 @@
         </label>
         <button type="submit" class="btn btn-p h-11">Cari</button>
     </form>
+    @isset($jumlah)
     <div class="fl" role="group" aria-label="Jenis personel">
         <span>Jenis</span>
         <div class="seg">
@@ -22,4 +23,5 @@
             <a href="{{ request()->fullUrlWithQuery(['jenis' => 'PNS', 'halaman' => null]) }}" aria-current="{{ $jenis === 'PNS' ? 'true' : 'false' }}">PNS ({{ $jumlah['PNS'] }})</a>
         </div>
     </div>
+    @endisset
 </section>
