@@ -10,7 +10,6 @@
         <h1 class="mt-1 text-[26px] font-semibold tracking-tight">Pengaturan</h1>
         <p class="mt-1.5 text-[15px] text-body">Data ini dipakai pada kop dan tanda tangan slip gaji.</p>
     </div>
-    <span class="badge">Data contoh</span>
 </header>
 
 <form method="post" action="{{ route('pengaturan.simpan') }}" class="flex max-w-[820px] flex-col gap-4">
@@ -23,7 +22,6 @@
             <label class="fl">Kota penerbitan<input name="kota" value="{{ old('kota', $s['kota'] ?? '') }}" class="inp w-full text-base" type="text" autocomplete="off"></label>
             <label class="fl">Nama Juru Bayar<input name="juru" value="{{ old('juru', $s['juru'] ?? '') }}" class="inp w-full text-base" type="text" autocomplete="off"></label>
             <label class="fl">Pangkat / NRP Juru Bayar<input name="juru_nrp" value="{{ old('juru_nrp', $s['juru_nrp'] ?? '') }}" class="inp w-full text-base" type="text" autocomplete="off"></label>
-            <label class="fl">Nama operator (tampil di menu samping)<input name="operator" value="{{ old('operator', $s['operator'] ?? '') }}" class="inp w-full text-base" type="text" autocomplete="off"></label>
         </div>
     </section>
 
@@ -32,22 +30,13 @@
         <label class="chk mt-2.5"><input type="checkbox" name="lega" value="1" @checked(! empty($s['lega']))>Tabel lega: huruf dan jarak antarbaris lebih besar</label>
     </section>
 
-    <div class="flex justify-end border-t border-[#DAD8D0] pt-3">
-        <button type="submit" class="btn btn-p btn-lg">Simpan pengaturan</button>
-    </div>
+    @can('ubah-pengaturan')
+        <div class="flex justify-end border-t border-[#DAD8D0] pt-3">
+            <button type="submit" class="btn btn-p btn-lg">Simpan pengaturan</button>
+        </div>
+    @else
+        <p class="note">Hanya Admin dan Juru Bayar yang bisa mengubah pengaturan ini.</p>
+    @endcan
 </form>
 
-<section class="card max-w-[820px]" x-data="{ yakin: false }">
-    <h2>Data uji coba</h2>
-    <p class="muted mb-3 mt-1.5 leading-normal">Menghapus semua yang tersimpan di sesi ini: kemajuan proses gaji, personel yang ditambah atau diubah, dan pengaturan.</p>
-    <button type="button" class="btn" x-show="!yakin" x-on:click="yakin = true">Kembalikan data uji coba ke awal</button>
-    <form method="post" action="{{ route('pengaturan.reset') }}" x-show="yakin" x-cloak>
-        @csrf
-        <p class="alert-t mb-2.5">@include('partials.ikon', ['n' => 'err', 'u' => 16])Semua data uji coba akan dihapus. Lanjutkan?</p>
-        <div class="flex gap-2">
-            <button type="submit" class="btn btn-p">Ya, hapus semua</button>
-            <button type="button" class="btn" x-on:click="yakin = false">Batal</button>
-        </div>
-    </form>
-</section>
 @endsection
