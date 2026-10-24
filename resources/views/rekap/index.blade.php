@@ -10,12 +10,13 @@
         <h1 class="mt-1 text-[26px] font-semibold tracking-tight">Rekap &amp; Laporan</h1>
     </div>
     <div class="flex flex-wrap items-end gap-2.5">
-        <span class="badge">Data contoh</span>
-        @include('partials.periode', ['tambah' => ['Januari–Desember 2026']])
+        @include('partials.periode')
     </div>
 </header>
-@include('partials.catatan-periode')
 
+@if (! $ada)
+    @include('partials.belum-ada', ['judul' => 'Rekap dan laporan'])
+@else
 <section class="card">
     <h2>Unduh laporan</h2>
     <p class="muted mb-2 mt-1">Klik <b>Lihat</b> untuk membuka laporan, atau langsung unduh dalam format yang dibutuhkan.</p>
@@ -28,7 +29,7 @@
                 </div>
                 <div class="flex flex-wrap gap-2">
                     <a class="btn" href="{{ route('rekap.show', $id) }}">Lihat</a>
-                    <a class="btn" href="{{ route('rekap.unduh', $id) }}">Unduh Excel</a>
+                    <a class="btn" href="{{ route('rekap.unduh', $id) }}">Unduh Excel (CSV)</a>
                     <a class="btn btn-o" href="{{ route('rekap.show', ['id' => $id, 'pdf' => 1]) }}">Unduh PDF</a>
                 </div>
             </li>
@@ -38,9 +39,12 @@
 
 <section class="card">
     <div class="mb-3 flex flex-wrap items-baseline justify-between gap-3">
-        <h2>Rekap gaji {{ session('periode', 'Oktober 2026') }}</h2>
-        <span class="inline-flex items-center gap-1.5 text-body"><span class="inline-flex text-alert">@include('partials.ikon', ['n' => 'err', 'u' => 16])</span>Angka sementara · 26 data masih menunggu verifikasi</span>
+        <h2>Rekap gaji {{ \App\Support\DataGaji::bulan() }}</h2>
+        @if ($hasil['tingkat']['TINGGI'] > 0)
+            <span class="inline-flex items-center gap-1.5 text-body"><span class="inline-flex text-alert">@include('partials.ikon', ['n' => 'err', 'u' => 16])</span>{{ $hasil['tingkat']['TINGGI'] }} temuan tinggi belum diselesaikan</span>
+        @endif
     </div>
     <div class="overflow-x-auto">@include('partials.tabel-laporan', ['rows' => $rep['rows']])</div>
 </section>
+@endif
 @endsection

@@ -2,33 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Support\Demo;
+use App\Support\DataGaji;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        if (! DataGaji::ada()) return view('dasbor', ['ada' => false]);
+
+        $slip = DataGaji::slip();
+        $tinggi = array_values(array_filter(DataGaji::temuan(), fn ($t) => $t['tingkat'] === 'TINGGI'));
+
         return view('dasbor', [
-            'agg' => Demo::agg(),
-            'total' => count(Demo::all()),
-            'perhatian' => [
-                ['Hendra Wibowo', 'Kapten Caj', '11•••0932', 'TNI', true, 'NRP tidak ada di softfile'],
-                ['Yoga Pratama', 'Sertu', '21•••7718', 'TNI', true, 'Belum ada di data personel'],
-                ['Dimas Prasetyo', 'Serka', '31•••4471', 'TNI', false, 'Tunjangan anak berubah (2 → 3)'],
-                ['Rina Kartika', 'Penata Muda · III/a', '1990•••2003', 'PNS', false, 'Gaji pokok naik Rp 112.400'],
-                ['Agus Salim', 'Pengatur · II/c', '1985•••1009', 'PNS', false, 'Potongan PPh 21 tidak terbaca'],
-            ],
+            'ada' => true, 'agg' => DataGaji::agg(), 'hasil' => DataGaji::hasil(), 'p' => DataGaji::proses(),
+            'total' => count($slip), 'siap' => count(array_filter($slip, fn ($r) => $r['stat'] === 'siap')),
+            'tinggi' => count($tinggi), 'perhatian' => array_slice($tinggi, 0, 5),
         ]);
     }
 
-    /** Ganti periode (disimpan di session; data contoh tetap Oktober 2026). */
+    /** Ganti periode: pilih salah satu proses gaji yang sudah selesai (disimpan di session). */
     public function periode(Request $request)
     {
-        $p = $request->input('periode');
-        if (in_array($p, array_merge(Demo::PERIODE, ['Januari–Desember 2026']), true)) {
-            $request->session()->put('periode', $p);
-        }
+        DataGaji::pilih((int) $request->input('proses'));
 
         return back();
     }

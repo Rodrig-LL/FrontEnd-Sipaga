@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Support\Demo;
+use App\Support\DataGaji;
 use App\Support\Halaman;
 use Illuminate\Http\Request;
 
@@ -10,23 +10,26 @@ class SlipController extends Controller
 {
     public function index(Request $request)
     {
-        $q = (string) $request->query('q', '');
-        $jenis = (string) $request->query('jenis', '');
-        $status = (string) $request->query('status', '');
-        $list = Demo::saring(array_values(Demo::all()), $q, $jenis, $status, 'slip');
-        [$hal, $galat] = Halaman::bagi($list, 25, $request);
+        if (! DataGaji::ada()) return view('slip.index', ['ada' => false]);
 
-        return view('slip.index', compact('hal', 'galat', 'q', 'jenis', 'status') + [
-            'jumlah' => ['' => count(Demo::all()), 'TNI' => Demo::agg()['A']['TNI']['n'], 'PNS' => Demo::agg()['A']['PNS']['n']],
+        $q = (string) $request->query('q', '');
+        $status = in_array($request->query('status'), ['siap', 'verif'], true) ? $request->query('status') : '';
+        $semua = array_values(DataGaji::slip());
+        [$hal, $galat] = Halaman::bagi(DataGaji::saring($semua, $q, $status), 25, $request);
+
+        return view('slip.index', compact('hal', 'galat', 'q', 'status') + [
+            'ada' => true, 'total' => count($semua), 'verif' => count(array_filter($semua, fn ($r) => $r['stat'] === 'verif')),
         ]);
     }
 
     public function show(int $n)
     {
-        $r = Demo::find($n);
+        $r = DataGaji::find($n);
         abort_unless($r, 404);
+        $urut = array_keys(DataGaji::slip());
+        $i = array_search($n, $urut, true);
 
-        return view('slip.show', ['r' => $r, 'total' => count(Demo::all())]);
+        return view('slip.show', ['r' => $r, 'total' => count($urut), 'posisi' => $i + 1, 'sebelum' => $urut[$i - 1] ?? null, 'sesudah' => $urut[$i + 1] ?? null]);
     }
 
     /**
@@ -37,7 +40,7 @@ class SlipController extends Controller
      */
     public function cetak(Request $request)
     {
-        $all = Demo::all();
+        $all = DataGaji::slip();
         $kembali = route('slip.index');
         $hal = null;
         $galat = null;
@@ -53,6 +56,6 @@ class SlipController extends Controller
             $list = array_values(array_filter(array_map(fn ($i) => $all[$i] ?? null, $ids)));
         }
 
-        return view('slip.cetak', compact('list', 'kembali', 'hal', 'galat'));
+        return view('slip.cetak', ['ada' => DataGaji::ada()] + compact('list', 'kembali', 'hal', 'galat'));
     }
 }
