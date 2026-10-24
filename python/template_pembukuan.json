@@ -1,0 +1,68 @@
+{
+  "_catatan": [
+    "TEMPLATE TATA LETAK PEMBUKUAN - ubah file ini bila format pembukuan berbeda.",
+    "Semua yang program harapkan dari file pembukuan ada di sini; tidak perlu menyentuh kode Python.",
+    "Huruf kolom ditulis seperti di Excel (A, B, ..., Z, AA, AS). Nomor baris mulai dari 1.",
+    "Pencocokan teks mengabaikan huruf besar/kecil dan spasi, jadi 'NRP / NIP' = 'nrp/nip' = 'NRP/NIP'.",
+    "Kalau salah satu penanda di bawah tidak ketemu, program berhenti dan menyebutkan",
+    "penanda mana yang dicari, di kolom/baris mana, dan apa yang sebenarnya ada di sana."
+  ],
+
+  "sheet": "BUKU TNI",
+
+  "header": {
+    "_": "Baris nama kolom. Dikenali dari sel berisi 'teks' di kolom 'kolom'.",
+    "kolom": "E",
+    "teks": "NRP/NIP",
+    "cari_baris": [1, 19]
+  },
+
+  "akhir_tabel": {
+    "_": "Baris penutup tabel. Data anggota = baris antara header dan baris ini.",
+    "kolom": "E",
+    "teks": "JUMLAH"
+  },
+
+  "kolom": {
+    "_": "Peta kolom data anggota. 'gaji' adalah satu-satunya kolom yang ditulis program.",
+    "no": "A",
+    "nama": "B",
+    "pangkat": "C",
+    "nrp": "E",
+    "gaji": "F",
+    "rekening": "AS",
+    "_pilihan": "Tiga kolom di bawah hanya dipakai saat template kosong diisi dari PDF; null = tidak diisi.",
+    "korps": "D",
+    "nama_rekening": "AT",
+    "no_record": "AV"
+  },
+
+  "label_bulan": {
+    "_": "Sel berisi 'teks' di atas header; nama bulan diambil dari sel sebelahnya.",
+    "_nilai_di": "'kanan' atau 'bawah'.",
+    "teks": "BULAN",
+    "nilai_di": "kanan"
+  },
+
+  "seksi_keluar": {
+    "_": "Daftar anggota pindah/pensiun di bawah baris akhir_tabel, untuk deteksi kelebihan bayar.",
+    "_kosongkan": "Set 'kolom' ke null bila pembukuan tidak punya seksi ini.",
+    "kolom": "B",
+    "mulai": "KELUAR",
+    "henti": "MASUK"
+  },
+
+  "baris_data": {
+    "_": "Aturan pengenal baris anggota asli, supaya baris sela/subtotal terlewat.",
+    "min_digit_nrp": 5,
+    "kolom_no_harus_angka": true
+  },
+
+  "kosongkan": {
+    "_": "Rentang kolom potongan yang isinya dihapus di tiap baris anggota pada buku bulan baru.",
+    "_alasan": "Potongan satuan diisi ulang juru bayar; kolom pinjaman bank diisi pihak bank.",
+    "_matikan": "Set 'dari' dan 'sampai' ke null bila potongan bulan lalu ingin dibawa.",
+    "dari": "G",
+    "sampai": "AI"
+  }
+}
