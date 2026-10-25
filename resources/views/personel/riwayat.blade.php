@@ -32,9 +32,15 @@
                         <td><b>{{ $h->aksi }}</b></td>
                         <td>{{ $h->nama }}<div class="sm num">{{ $h->nrp }}</div></td>
                         <td class="pr-3.5">
-                            @foreach ($h->perubahan as $k => [$lama, $baru])
+                            {{-- Kebanyakan baris berpasangan [lama, baru]; ringkasan impor ('impor') berisi nilai biasa (jenis, jumlah, daftar berkas). --}}
+                            @foreach ($h->perubahan as $k => $v)
                                 <div class="text-sm"><span class="text-muted">{{ $kolom[$k] ?? $k }}:</span>
-                                    @if ($lama !== '')<s>{{ $lama }}</s> → @endif{{ $baru !== '' ? $baru : '(kosong)' }}</div>
+                                    @if ($h->aksi !== 'impor' && is_array($v) && count($v) === 2 && array_key_exists(0, $v) && array_key_exists(1, $v))
+                                        @if ($v[0] !== '')<s>{{ $v[0] }}</s> → @endif{{ $v[1] !== '' ? $v[1] : '(kosong)' }}
+                                    @else
+                                        {{ is_array($v) ? implode(', ', $v) : $v }}
+                                    @endif
+                                </div>
                             @endforeach
                         </td>
                     </tr>

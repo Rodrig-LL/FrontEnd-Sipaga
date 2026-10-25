@@ -28,6 +28,9 @@ nama pengguna. Tabel `riwayat` dijaga **trigger database**: UPDATE dan DELETE di
 
 Penulisan lewat `PersonelService` (satu transaksi dengan riwayatnya).
 
+Catatan **impor** (`impor`, ringkasan satu impor Excel) isinya nilai biasa (jenis, jumlah, daftar berkas), bukan pasangan lama → baru.
+Halaman ini dulu error begitu catatan seperti itu muncul di halaman pertama; kini kedua bentuk ditampilkan (ada tes regresinya).
+
 ## Berkas utama
 
 `app/Models/Personel.php`, `app/Services/PersonelService.php`, `app/Http/Requests/SimpanPersonelRequest.php`,

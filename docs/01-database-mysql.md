@@ -4,7 +4,7 @@
 
 - Bawaan proyek: **SQLite** (`DB_CONNECTION=sqlite`), cukup untuk mencoba.
 - Dipakai sekarang: **MariaDB 10.4.32** dari XAMPP (`/opt/lampp`), lewat driver `mysql` Laravel.
-- Seluruh tes lulus di **kedua** database (71 tes, 588 pernyataan).
+- Seluruh tes lulus di **kedua** database (72 tes, 595 pernyataan).
 
 ## Cocok dengan Laravel 13?
 

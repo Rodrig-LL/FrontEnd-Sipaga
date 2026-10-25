@@ -110,6 +110,20 @@ class PersonelTest extends TestCase
         $this->assertSame(['Ahmad Fauzi', ''], $h->perubahan['nama']);
     }
 
+    public function test_halaman_riwayat_memuat_semua_jenis_catatan(): void
+    {
+        $u = $this->sebagai('juru_bayar');
+        $this->post('/personel', $this->data());
+        $baris = fn (string $aksi, array $perubahan) => Riwayat::create(['operator' => 'Pak X', 'aksi' => $aksi, 'nrp' => '', 'nama' => '', 'perubahan' => $perubahan]);
+        // Ringkasan impor berisi nilai biasa, bukan pasangan [lama, baru] (dulu membuat halaman ini error)
+        $baris('impor', ['berkas' => ['A NOMINATIF.xlsx', 'B NOMINATIF.xlsx'], 'jenis' => 'nominatif', 'tambah' => 178, 'ubah' => 0]);
+        $baris('impor', ['berkas' => ['SATU.xlsx'], 'jenis' => 'bank', 'tambah' => 0]);
+        $baris('proses: hapus', ['Proses gaji' => ['#1 NOVEMBER 2026 · selesai', '']]);
+
+        $this->get('/personel/riwayat')->assertOk()->assertSee('A NOMINATIF.xlsx, B NOMINATIF.xlsx')->assertSee('nominatif')->assertSee('178')
+            ->assertSee('SATU.xlsx')->assertSee('#1 NOVEMBER 2026 · selesai')->assertSee('Ahmad Fauzi');
+    }
+
     public function test_riwayat_tidak_bisa_diubah_atau_dihapus_walau_lewat_sql(): void
     {
         $this->sebagai()->post('/personel', $this->data());
