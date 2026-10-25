@@ -2,7 +2,7 @@
 @section('title', 'Slip Gaji')
 
 @section('konten')
-@include('partials.kembali', ['href' => route('dasbor'), 'label' => 'Kembali ke Dasbor'])
+@include('partials.kembali', ['href' => route('dashboard'), 'label' => 'Kembali ke Dashboard'])
 
 <header class="flex flex-wrap items-end justify-between gap-4">
     <div>

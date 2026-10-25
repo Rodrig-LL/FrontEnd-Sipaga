@@ -6,7 +6,7 @@ use App\Models\ProsesGaji;
 use Illuminate\Support\Collection;
 
 /**
- * Sumber data halaman Dasbor, Slip, dan Rekap: hasil proses gaji yang sudah selesai (hasil.json dari Python).
+ * Sumber data halaman Dashboard, Slip, dan Rekap: hasil proses gaji yang sudah selesai (hasil.json dari Python).
  * Susunannya mengikuti sipaga.js di aplikasi Python (siapkan(), agg()), supaya angkanya sama di kedua tempat.
  * Menggantikan Demo. Yang dipakai = proses yang dipilih di pemilih periode, atau yang terbaru.
  */

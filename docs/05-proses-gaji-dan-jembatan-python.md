@@ -31,7 +31,7 @@ yang selalu menulis angka DPP (JML DIBAYARKAN).
 Di daftar **Proses sebelumnya** (halaman `/gaji`), admin dan juru bayar (`hapus-proses`) bisa menghapus satu proses setelah konfirmasi.
 
 - Yang terhapus: baris di `proses_gaji` **dan** seluruh `storage/app/private/proses/{id}/` (PDF/pembukuan yang diunggah, pembukuan baru, laporan validasi,
-  Daftar Potongan, `hasil.json`). Slip, Dasbor, dan Rekap periode itu ikut hilang karena bersumber dari `hasil.json`; bila proses itu sedang dipilih,
+  Daftar Potongan, `hasil.json`). Slip, Dashboard, dan Rekap periode itu ikut hilang karena bersumber dari `hasil.json`; bila proses itu sedang dipilih,
   halaman-halaman itu beralih ke proses selesai terbaru berikutnya (atau "belum ada").
 - **Unduh dulu** berkas yang masih dibutuhkan.
 - Proses yang `menunggu`/`berjalan` tidak bisa dihapus, kecuali macet (tidak ada kemajuan melewati `SIPAGA_PYTHON_TIMEOUT` + 2 menit).

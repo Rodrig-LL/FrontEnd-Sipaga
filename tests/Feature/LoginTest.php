@@ -17,15 +17,20 @@ class LoginTest extends TestCase
 
     public function test_tamu_diarahkan_ke_halaman_masuk(): void
     {
-        $this->get('/dasbor')->assertRedirect(route('masuk'));
+        $this->get('/dashboard')->assertRedirect(route('masuk'));
         $this->get('/personel')->assertRedirect(route('masuk'));
+    }
+
+    public function test_url_lama_dasbor_dialihkan_ke_dashboard(): void
+    {
+        $this->get('/dasbor')->assertRedirect('/dashboard')->assertStatus(301);
     }
 
     public function test_masuk_dengan_sandi_benar(): void
     {
         $this->pengguna();
 
-        $this->post('/masuk', ['pengguna' => 'budi', 'sandi' => 'sandi-rahasia-1'])->assertRedirect(route('dasbor'));
+        $this->post('/masuk', ['pengguna' => 'budi', 'sandi' => 'sandi-rahasia-1'])->assertRedirect(route('dashboard'));
         $this->assertAuthenticated();
     }
 

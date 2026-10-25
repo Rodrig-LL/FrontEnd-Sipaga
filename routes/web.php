@@ -13,16 +13,19 @@ use Illuminate\Support\Facades\Route;
 
 require_once app_path('helpers.php');   // rp(), juta(), terbilang() untuk view
 
+// URL lama sebelum nama halaman diganti dari "Dasbor" menjadi "Dashboard"; tetap berfungsi untuk bookmark.
+Route::redirect('/dasbor', '/dashboard', 301);
+
 Route::middleware('guest')->group(function () {
     Route::get('/masuk', [AuthController::class, 'create'])->name('masuk');
     Route::post('/masuk', [AuthController::class, 'store'])->middleware('throttle:5,1')->name('masuk.simpan');
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', fn () => redirect()->route('dasbor'));
+    Route::get('/', fn () => redirect()->route('dashboard'));
     Route::post('/keluar', [AuthController::class, 'destroy'])->name('keluar');
 
-    Route::get('/dasbor', [DashboardController::class, 'index'])->name('dasbor');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/periode', [DashboardController::class, 'periode'])->name('periode');
 
     // Proses gaji sungguhan (Python di belakangnya)

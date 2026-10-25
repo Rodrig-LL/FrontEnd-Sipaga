@@ -1,7 +1,7 @@
 # SIPAGA — Slip Gaji Terpadu (Laravel 13 + Blade + Alpine.js + Tailwind 3.4)
 
 Aplikasi web untuk juru bayar: membaca **PDF DPP** gaji, mencocokkannya dengan pembukuan bulan lalu dan **Data Personel**,
-lalu menghasilkan **pembukuan baru, laporan validasi, Daftar Potongan**, serta slip, dasbor, dan rekap dari angka DPP.
+lalu menghasilkan **pembukuan baru, laporan validasi, Daftar Potongan**, serta slip, dashboard, dan rekap dari angka DPP.
 Logika gaji dikerjakan kode Python juru bayar (`python/`) lewat sebuah jembatan; Laravel menyimpan data, mengatur hak akses,
 dan menampilkan hasil. Tampilan ringan untuk laptop lama (Firefox ESR 115): HTML dari server, CSS ±37 KB, JS ±44 KB.
 

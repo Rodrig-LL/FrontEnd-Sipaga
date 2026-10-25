@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', 'Dasbor')
+@section('title', 'Dashboard')
 
 @section('konten')
 <header class="flex flex-wrap items-end justify-between gap-4">
     <div>
         <p class="text-[13px] text-muted">Periode gaji · {{ \App\Support\DataGaji::ada() ? \App\Support\DataGaji::bulan() : 'belum ada' }}</p>
-        <h1 class="mt-1 text-[26px] font-semibold tracking-tight">Dasbor</h1>
+        <h1 class="mt-1 text-[26px] font-semibold tracking-tight">Dashboard</h1>
     </div>
     <div class="flex flex-wrap items-end gap-2.5">
         @include('partials.periode')
@@ -14,7 +14,7 @@
 </header>
 
 @if (! $ada)
-    @include('partials.belum-ada', ['judul' => 'Dasbor'])
+    @include('partials.belum-ada', ['judul' => 'Dashboard'])
 @else
 @php
     $t = $agg['tot'];

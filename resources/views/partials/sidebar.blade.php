@@ -13,7 +13,7 @@
     </div>
 
     <div class="flex flex-col gap-1">
-        <a href="{{ route('dasbor') }}" class="nav-a {{ request()->routeIs('dasbor') ? 'on' : '' }}" @if (request()->routeIs('dasbor')) aria-current="page" @endif>@include('partials.ikon', ['n' => 'home'])Dasbor</a>
+        <a href="{{ route('dashboard') }}" class="nav-a {{ request()->routeIs('dashboard') ? 'on' : '' }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>@include('partials.ikon', ['n' => 'home'])Dashboard</a>
     </div>
 
     <div class="flex flex-col gap-1">

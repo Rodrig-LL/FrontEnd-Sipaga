@@ -13,7 +13,7 @@ Satu berkas per bagian yang berubah. Baca urutannya bila baru pertama kali:
 | [03-data-personel.md](03-data-personel.md) | Data Personel, riwayat perubahan yang tak bisa diubah |
 | [04-impor-excel.md](04-impor-excel.md) | Impor nominatif, bank/rekening, potongan, dan arisan (dengan pratinjau) |
 | [05-proses-gaji-dan-jembatan-python.md](05-proses-gaji-dan-jembatan-python.md) | Proses gaji 5 langkah dan jembatan Laravel ke Python |
-| [06-slip-dasbor-rekap.md](06-slip-dasbor-rekap.md) | Slip Gaji, Dasbor, Rekap & Laporan dari data DPP nyata |
+| [06-slip-dashboard-rekap.md](06-slip-dashboard-rekap.md) | Slip Gaji, Dashboard, Rekap & Laporan dari data DPP nyata |
 | [07-potongan-satuan.md](07-potongan-satuan.md) | Potongan satuan dan Daftar Potongan |
 | [08-tampilan-waktu-pengaturan.md](08-tampilan-waktu-pengaturan.md) | Logo dan palet, zona waktu WIB, pengaturan kop slip |
 | [09-pengujian.md](09-pengujian.md) | Cara menjalankan tes (SQLite dan MariaDB) |
@@ -44,6 +44,6 @@ Di server, buat pengguna dengan `php artisan sipaga:pengguna <username> "<Nama L
 
 - Potongan massal dan cek batas pinjam langsung di form per orang.
 - MASS DEBET khusus BSI/BTN per jenis potongan; pengimpor daftar cicilan bank.
-- Pembaca DPP PNS (di sisi Python), sehingga slip, laporan, dan dasbor masih TNI saja.
+- Pembaca DPP PNS (di sisi Python), sehingga slip, laporan, dan dashboard masih TNI saja.
 - Pembacaan PDF hasil scan (OCR) hanya jalan di Windows; di Linux hanya PDF bertekslah.
 - Belum diuji dengan berkas DPP, nominatif, pembukuan, dan arisan asli.

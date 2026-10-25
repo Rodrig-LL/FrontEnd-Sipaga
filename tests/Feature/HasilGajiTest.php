@@ -12,7 +12,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-/** Dasbor, Slip, dan Rekap membaca hasil proses gaji nyata (Python dengan data sintetis di tests/fixtures/dpp). */
+/** Dashboard, Slip, dan Rekap membaca hasil proses gaji nyata (Python dengan data sintetis di tests/fixtures/dpp). */
 class HasilGajiTest extends TestCase
 {
     use RefreshDatabase;
@@ -50,18 +50,18 @@ class HasilGajiTest extends TestCase
     {
         $this->masuk();
 
-        foreach (['/dasbor', '/slip', '/rekap', '/slip/cetak?semua=1'] as $url) {
+        foreach (['/dashboard', '/slip', '/rekap', '/slip/cetak?semua=1'] as $url) {
             $this->get($url)->assertOk()->assertSee('Belum ada gaji yang diproses');
         }
         $this->get('/rekap/bulanan')->assertRedirect(route('rekap.index'));
         $this->get('/slip/1')->assertNotFound();
     }
 
-    public function test_dasbor_dari_data_dpp(): void
+    public function test_dashboard_dari_data_dpp(): void
     {
         $this->prosesNyata();
 
-        $this->get('/dasbor')->assertOk()->assertSee('November 2026')->assertSee('Anggota menurut DPP')
+        $this->get('/dashboard')->assertOk()->assertSee('November 2026')->assertSee('Anggota menurut DPP')
             ->assertSee('Perlu perhatian')->assertSee('Hitungan DPP tidak konsisten')->assertSee('RIZKY FEBRIAN')->assertSee('71,0 jt')->assertDontSee('Data contoh');
     }
 

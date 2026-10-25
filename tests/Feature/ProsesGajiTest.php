@@ -196,7 +196,7 @@ class ProsesGajiTest extends TestCase
         $p = $this->prosesJadi();
         \App\Support\DataGaji::lupakan();       // cache statis hanya hidup selama satu permintaan di produksi
         $this->get('/gaji')->assertOk()->assertSee('Lanjut: Periksa hasil baca')->assertSee(route('gaji.langkah', [$p, 2]))
-            ->assertSee(route('gaji.langkah', [$p, 5]))->assertSee('dipakai Dasbor, Slip, dan Rekap');
+            ->assertSee(route('gaji.langkah', [$p, 5]))->assertSee('dipakai Dashboard, Slip, dan Rekap');
     }
 
     public function test_hapus_proses_menghapus_baris_berkas_dan_mencatat_riwayat(): void

@@ -9,12 +9,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if (! DataGaji::ada()) return view('dasbor', ['ada' => false]);
+        if (! DataGaji::ada()) return view('dashboard', ['ada' => false]);
 
         $slip = DataGaji::slip();
         $tinggi = array_values(array_filter(DataGaji::temuan(), fn ($t) => $t['tingkat'] === 'TINGGI'));
 
-        return view('dasbor', [
+        return view('dashboard', [
             'ada' => true, 'agg' => DataGaji::agg(), 'hasil' => DataGaji::hasil(), 'p' => DataGaji::proses(),
             'total' => count($slip), 'siap' => count(array_filter($slip, fn ($r) => $r['stat'] === 'siap')),
             'tinggi' => count($tinggi), 'perhatian' => array_slice($tinggi, 0, 5),

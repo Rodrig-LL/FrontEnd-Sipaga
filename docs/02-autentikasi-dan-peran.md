@@ -8,7 +8,7 @@ Menggantikan login prototipe (nama pengguna dan kata sandi apa saja, middleware 
 - `POST /masuk` memakai `Auth::attempt` dengan syarat `aktif = true`. Pesan galat **sama** untuk pengguna tak dikenal,
   sandi salah, dan akun nonaktif (tidak membocorkan mana yang benar).
 - Dibatasi **5 percobaan per menit** (`throttle:5,1`), lalu HTTP 429.
-- Keluar: sesi di-invalidate dan token dibuat ulang. Pengguna yang sudah masuk diarahkan dari `/masuk` ke dasbor.
+- Keluar: sesi di-invalidate dan token dibuat ulang. Pengguna yang sudah masuk diarahkan dari `/masuk` ke dashboard.
 - Rute di dalam aplikasi memakai middleware `auth`; tamu diarahkan ke `/masuk` (`bootstrap/app.php`).
 
 ## Membuat pengguna

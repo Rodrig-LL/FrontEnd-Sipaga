@@ -12,7 +12,7 @@ melompat otomatis bila `python/.venv` belum dipasang.
 | `LoginTest` | login, pesan galat seragam, akun nonaktif, sandi ter-hash, batas percobaan |
 | `PersonelTest` | tambah/ubah/keluar/hapus, validasi, riwayat per kolom, trigger riwayat, hak hapus |
 | `ProsesGajiTest` | validasi unggahan, hak akses, jalur penuh dengan Python sungguhan, langkah 2–5, zona waktu |
-| `HasilGajiTest` | Dasbor, Slip, Rekap, CSV, pemilih periode, kop slip di database |
+| `HasilGajiTest` | Dashboard, Slip, Rekap, CSV, pemilih periode, kop slip di database |
 | `ImporPersonelTest` | pratinjau tanpa mengubah data, terapkan + riwayat, pratinjau basi, bank, berkas bukan nominatif |
 | `PotonganTest` | potongan/pinjaman/pokok/aturan, Daftar Potongan lewat Python, impor potongan dan arisan |
 

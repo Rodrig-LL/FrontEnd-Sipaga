@@ -1,11 +1,11 @@
-# Slip Gaji, Dasbor, dan Rekap & Laporan
+# Slip Gaji, Dashboard, dan Rekap & Laporan
 
 Ketiganya dulu membaca `App\Support\Demo` (512 personel karangan). `Demo` **dihapus**; sumber datanya sekarang
 `App\Support\DataGaji`, yaitu `hasil.json` dari proses gaji yang sudah selesai. Susunannya mengikuti `sipaga.js` di aplikasi Python.
 
 ## Periode
 
-Pemilih periode di Dasbor, Slip, dan Rekap memilih salah satu **proses gaji yang sudah selesai** (disimpan di session; bawaan: yang terbaru).
+Pemilih periode di Dashboard, Slip, dan Rekap memilih salah satu **proses gaji yang sudah selesai** (disimpan di session; bawaan: yang terbaru).
 Tanpa proses selesai, tiap halaman menampilkan "Belum ada gaji yang diproses" dengan tombol mulai proses.
 
 ## Slip Gaji (`/slip`)
@@ -18,7 +18,7 @@ Tanpa proses selesai, tiap halaman menampilkan "Belum ada gaji yang diproses" de
 - Catatan **"Belum termasuk potongan satuan"** tercetak di setiap slip (sesuai dokumen juru bayar; jangan dihapus).
   Slip memuat angka DPP; potongan satuan ada di Daftar Potongan.
 
-## Dasbor (`/dasbor`)
+## Dashboard (`/dashboard`)
 
 Anggota menurut DPP, tanpa temuan, perlu dicek, belum ada di pembukuan; rekap per berkas PDF (penghasilan, potongan, dibayarkan);
 daftar temuan tinggi ("Perlu perhatian").
@@ -33,4 +33,4 @@ Ada juga rekap bulanan di bawah daftar laporan.
 ## Berkas utama
 
 `app/Support/DataGaji.php`, `app/Support/Laporan.php`, `app/Http/Controllers/{Dashboard,Slip,Rekap}Controller.php`,
-`resources/views/{dasbor,slip,rekap}/`, `resources/views/partials/{slip,periode,belum-ada}.blade.php`.
+`resources/views/{dashboard,slip,rekap}/`, `resources/views/partials/{slip,periode,belum-ada}.blade.php`.

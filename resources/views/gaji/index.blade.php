@@ -9,7 +9,7 @@
 @endphp
 
 @section('konten')
-@include('partials.kembali', ['href' => route('dasbor'), 'label' => 'Kembali ke Dasbor'])
+@include('partials.kembali', ['href' => route('dashboard'), 'label' => 'Kembali ke Dashboard'])
 
 <header class="flex flex-wrap items-end justify-between gap-4">
     <div>
@@ -65,7 +65,7 @@
                 <tbody x-data="{ yakin: false }">
                     <tr>
                         <td class="whitespace-nowrap pl-3.5">{{ $d->created_at->translatedFormat('j M Y H:i') }}
-                            @if ($aktif && $d->id === $aktif->id)<div class="sm">dipakai Dasbor, Slip, dan Rekap</div>@endif</td>
+                            @if ($aktif && $d->id === $aktif->id)<div class="sm">dipakai Dashboard, Slip, dan Rekap</div>@endif</td>
                         <td>{{ $d->bulan ? mb_convert_case($d->bulan, MB_CASE_TITLE) : '—' }}</td>
                         <td>{{ $d->user?->name ?? '—' }}</td>
                         <td>@if ($d->status === 'gagal')<span class="alert-t">@include('partials.ikon', ['n' => 'err', 'u' => 16]){{ $statusLabel[$d->status] }}</span>@else{{ $statusLabel[$d->status] ?? $d->status }}@endif</td>
@@ -104,7 +104,7 @@
     </div>
     @can('hapus-proses')
         @if ($daftar->isNotEmpty())
-            <p class="muted px-3.5 py-3">Menghapus proses ikut menghapus berkas hasilnya (pembukuan baru, laporan validasi, Daftar Potongan) dan slip, dasbor, serta rekap periode itu. <b>Unduh dulu</b> berkas yang masih dibutuhkan. Penghapusan tercatat di <a class="lnk" href="{{ route('personel.riwayat') }}">riwayat</a>.</p>
+            <p class="muted px-3.5 py-3">Menghapus proses ikut menghapus berkas hasilnya (pembukuan baru, laporan validasi, Daftar Potongan) dan slip, dashboard, serta rekap periode itu. <b>Unduh dulu</b> berkas yang masih dibutuhkan. Penghapusan tercatat di <a class="lnk" href="{{ route('personel.riwayat') }}">riwayat</a>.</p>
         @endif
     @endcan
 </section>
