@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LogAktivitas;
 use App\Models\Personel;
 use App\Models\Pinjaman;
 use App\Services\PotonganService;
@@ -66,12 +67,16 @@ class PotonganController extends Controller
     {
         $baru = $this->layanan->simpanOrang($personel, (array) $request->input('potongan', []), $request->user());
 
+        if ($baru) LogAktivitas::catat('potongan', 'Potongan '.$personel->nama);
+
         return redirect()->route('potongan.orang', $personel)->with('ok', $baru ? 'Potongan '.$personel->nama.' disimpan.' : 'Tidak ada yang berubah.');
     }
 
     public function simpanPokok(Request $request, Personel $personel)
     {
         $baru = $this->layanan->simpanPokok($personel, $request->input('bulan'), $request->input('nominal'), $request->user());
+
+        if ($baru) LogAktivitas::catat('potongan', 'Simpanan pokok '.$personel->nama);
 
         return redirect()->route('potongan.orang', $personel)->with('ok', $baru ? 'Simpanan pokok disimpan.' : 'Tidak ada yang berubah.');
     }
@@ -80,6 +85,8 @@ class PotonganController extends Controller
     {
         [$pj] = $this->layanan->simpanPinjaman($request->all(), $request->user());
 
+        LogAktivitas::catat('potongan', 'Pinjaman baru '.$pj->personel?->nama);
+
         return redirect()->route('potongan.orang', $pj->personel_id)->with('ok', 'Pinjaman dicatat.');
     }
 
@@ -87,12 +94,16 @@ class PotonganController extends Controller
     {
         [, $berubah] = $this->layanan->simpanPinjaman($request->all(), $request->user(), $pinjaman);
 
+        if ($berubah) LogAktivitas::catat('potongan', 'Pinjaman diubah '.$pinjaman->personel?->nama);
+
         return redirect()->route('potongan.orang', $pinjaman->personel_id)->with('ok', $berubah ? 'Pinjaman disimpan.' : 'Tidak ada yang berubah.');
     }
 
     public function simpanAturan(Request $request)
     {
         $berubah = $this->layanan->simpanAturan($request->all(), $request->user());
+
+        if ($berubah) LogAktivitas::catat('potongan', 'Aturan potongan');
 
         return redirect()->route('potongan.index', ['lihat' => 'aturan'])->with('ok', $berubah ? 'Aturan disimpan.' : 'Tidak ada yang berubah.');
     }

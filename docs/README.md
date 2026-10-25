@@ -18,6 +18,7 @@ Satu berkas per bagian yang berubah. Baca urutannya bila baru pertama kali:
 | [08-tampilan-waktu-pengaturan.md](08-tampilan-waktu-pengaturan.md) | Logo dan palet, zona waktu WIB, pengaturan kop slip |
 | [09-pengujian.md](09-pengujian.md) | Cara menjalankan tes (SQLite dan MariaDB) |
 | [10-git-dan-github.md](10-git-dan-github.md) | Alur commit dan push ke GitHub (token, cabang, yang tidak boleh ikut) |
+| [11-admin-akun-dan-log.md](11-admin-akun-dan-log.md) | Peran Admin: kelola akun dan log aktivitas |
 
 ## Menjalankan dari nol
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\JalankanProsesGaji;
+use App\Models\LogAktivitas;
 use App\Models\Personel;
 use App\Models\ProsesGaji;
 use App\Models\Riwayat;
@@ -70,6 +71,7 @@ class ProsesGajiController extends Controller
         foreach ($request->file('pdf') as $i => $f) $f->storeAs($proses->folder('masuk'), $pdf[$i], 'local');
         $request->file('buku')->storeAs($proses->folder('masuk'), $buku, 'local');
 
+        LogAktivitas::catat('gaji_jalan', "Proses #{$proses->id}: ".count($pdf).' PDF DPP + pembukuan '.$buku);
         JalankanProsesGaji::dispatch($proses);
 
         return redirect()->route('gaji.show', $proses);
@@ -92,6 +94,7 @@ class ProsesGajiController extends Controller
             $proses->delete();
         });
         Storage::disk('local')->deleteDirectory($proses->folder());
+        LogAktivitas::catat('gaji_hapus', $ringkas);
         DataGaji::lupakan();
 
         return redirect()->route('gaji.index')->with('ok', 'Proses '.($proses->bulan ?: '#'.$proses->id).' dihapus beserta berkas hasilnya.');

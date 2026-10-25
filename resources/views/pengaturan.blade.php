@@ -35,7 +35,7 @@
             <button type="submit" class="btn btn-p btn-lg">Simpan pengaturan</button>
         </div>
     @else
-        <p class="note">Hanya Admin dan Juru Bayar yang bisa mengubah pengaturan ini.</p>
+        <p class="note">Hanya Juru Bayar yang bisa mengubah pengaturan ini.</p>
     @endcan
 </form>
 

@@ -15,7 +15,13 @@ Susunannya mengikuti portal `carakabinum.web.id`: lambang di tengah (tanpa kotak
 `partials/logo` dengan opsi `polos`), lalu **DIREKTORAT AJUDAN JENDERAL** (tebal, hijau tua) dan **TNI ANGKATAN DARAT** (kecil, jarak huruf lebar),
 lalu **SIPAGA** dengan keterangan "Sistem Pengolahan Data dan Slip Gaji", baru kartu formulir masuk. Tulisan sumbernya huruf biasa; huruf besar
 diatur CSS. Di ponsel susunan tetap satu kolom tanpa gulir mendatar.
-Nama lengkap aplikasi ("Sistem Pengolahan Data dan Slip Gaji") baru dipakai di halaman ini; sidebar setelah login masih bertuliskan "Slip Gaji Terpadu".
+Nama lengkap yang sama ("Sistem Pengolahan Data dan Slip Gaji") kini juga di bawah "SIPAGA" pada sidebar (menggantikan "Slip Gaji Terpadu"),
+sedangkan peran di bawah nama pengguna mengikuti akun (dulu selalu tertulis "Juru Bayar").
+
+## Ikon tab
+
+Lambang instansi dipakai sebagai ikon tab (`<link rel="icon">` dan `apple-touch-icon`, partial `partials/ikon-tab`) di tata letak aplikasi dan halaman masuk.
+Berkasnya sama dengan logo: `public/img/logo-instansi.png`; bila tidak ada, tag ikon tidak dibuat.
 
 ## Zona waktu dan bahasa
 

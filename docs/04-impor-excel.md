@@ -1,6 +1,6 @@
 # Impor Excel dengan pratinjau
 
-Menu: **Data Personel → Impor dari Excel** (`/personel/impor`). Hanya admin dan juru bayar (`impor-personel`).
+Menu: **Data Personel → Impor dari Excel** (`/personel/impor`). Hanya juru bayar (`impor-personel`).
 Hanya berkas **`.xlsx`** (`.xls` butuh LibreOffice di server).
 
 ## Empat jenis

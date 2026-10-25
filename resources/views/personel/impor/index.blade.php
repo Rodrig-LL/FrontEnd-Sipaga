@@ -68,7 +68,7 @@
         </form>
     </section>
 @else
-    <p class="note">Hanya Admin dan Juru Bayar yang bisa mengimpor. Anda tetap bisa melihat pratinjau yang sudah dibuat.</p>
+    <p class="note">Hanya Juru Bayar yang bisa mengimpor. Anda tetap bisa melihat pratinjau yang sudah dibuat.</p>
 @endif
 
 <section class="card overflow-hidden p-0">

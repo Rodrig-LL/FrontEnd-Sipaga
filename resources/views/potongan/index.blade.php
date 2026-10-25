@@ -149,7 +149,7 @@
             </div>
         </section>
         @if ($boleh)<div class="flex justify-end border-t border-[#DAD8D0] pt-3"><button type="submit" class="btn btn-p btn-lg">Simpan aturan</button></div>
-        @else<p class="note">Hanya Admin dan Juru Bayar yang bisa mengubah aturan.</p>@endif
+        @else<p class="note">Hanya Juru Bayar yang bisa mengubah aturan.</p>@endif
     </form>
 @endif
 @endsection

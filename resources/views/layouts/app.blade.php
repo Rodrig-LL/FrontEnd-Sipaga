@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title') – SIPAGA</title>
+    @include('partials.ikon-tab')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="{{ \App\Models\Pengaturan::ambil('lega') ? 'lega' : '' }}">

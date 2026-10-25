@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AkunController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImporPersonelController;
 use App\Http\Controllers\PengaturanController;
@@ -21,10 +23,23 @@ Route::middleware('guest')->group(function () {
     Route::post('/masuk', [AuthController::class, 'store'])->middleware('throttle:5,1')->name('masuk.simpan');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', fn () => redirect()->route('dashboard'));
+Route::middleware(['auth', 'aktif'])->group(function () {
+    Route::get('/', fn () => redirect()->route(auth()->user()->punyaPeran('admin') ? 'akun.index' : 'dashboard'));
     Route::post('/keluar', [AuthController::class, 'destroy'])->name('keluar');
 
+    // Admin: hanya kelola akun dan log aktivitas
+    Route::middleware('can:kelola-akun')->group(function () {
+        Route::get('/akun', [AkunController::class, 'index'])->name('akun.index');
+        Route::get('/akun/baru', [AkunController::class, 'create'])->name('akun.create');
+        Route::post('/akun', [AkunController::class, 'store'])->name('akun.store');
+        Route::get('/akun/{akun}/ubah', [AkunController::class, 'edit'])->whereNumber('akun')->name('akun.edit');
+        Route::put('/akun/{akun}', [AkunController::class, 'update'])->whereNumber('akun')->name('akun.update');
+        Route::get('/log', [LogAktivitasController::class, 'index'])->name('log.index');
+    });
+});
+
+// Halaman kerja: untuk Juru Bayar dan Operator; Admin dialihkan ke kelola akun.
+Route::middleware(['auth', 'aktif', 'operasional'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/periode', [DashboardController::class, 'periode'])->name('periode');
 

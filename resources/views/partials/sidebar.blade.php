@@ -2,16 +2,25 @@
     $nama = auth()->user()->name;
     $kata = preg_split('/\s+/', trim($nama));
     $inisial = $nama[0] === '[' ? 'JB' : strtoupper(substr($kata[0], 0, 1).(isset($kata[1]) ? substr($kata[1], 0, 1) : ''));
+    $admin = auth()->user()->punyaPeran('admin');
 @endphp
 <nav aria-label="Navigasi utama" class="sticky top-0 flex min-h-screen flex-col gap-[22px] px-3 py-5">
     <div class="flex items-center gap-2.5 px-2">
         @include('partials.logo', ['ukuran' => 'h-10 w-12'])
         <div>
             <b class="block text-base tracking-[.06em]">SIPAGA</b>
-            <span class="block text-xs text-[#A9B2A3]">Slip Gaji Terpadu</span>
+            <span class="block text-xs leading-snug text-[#A9B2A3]">Sistem Pengolahan Data dan Slip Gaji</span>
         </div>
     </div>
 
+    @if ($admin)
+    {{-- Admin hanya mengurus akun dan log aktivitas --}}
+    <div class="flex flex-col gap-1">
+        <div class="px-2.5 pb-1 text-[11px] font-semibold tracking-[.1em] text-[#A9B2A3]">ADMINISTRASI</div>
+        <a href="{{ route('akun.index') }}" class="nav-a {{ request()->routeIs('akun.*') ? 'on' : '' }}" @if (request()->routeIs('akun.*')) aria-current="page" @endif>@include('partials.ikon', ['n' => 'users'])Akun Pengguna</a>
+        <a href="{{ route('log.index') }}" class="nav-a {{ request()->routeIs('log.*') ? 'on' : '' }}" @if (request()->routeIs('log.*')) aria-current="page" @endif>@include('partials.ikon', ['n' => 'doc'])Log Aktivitas</a>
+    </div>
+    @else
     <div class="flex flex-col gap-1">
         <a href="{{ route('dashboard') }}" class="nav-a {{ request()->routeIs('dashboard') ? 'on' : '' }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>@include('partials.ikon', ['n' => 'home'])Dashboard</a>
     </div>
@@ -28,12 +37,15 @@
         <a href="{{ route('potongan.index') }}" class="nav-a {{ request()->routeIs('potongan.*') ? 'on' : '' }}" @if (request()->routeIs('potongan.*')) aria-current="page" @endif>@include('partials.ikon', ['n' => 'file'])Potongan Satuan</a>
         <a href="{{ route('rekap.index') }}" class="nav-a {{ request()->routeIs('rekap.*') ? 'on' : '' }}" @if (request()->routeIs('rekap.*')) aria-current="page" @endif>@include('partials.ikon', ['n' => 'chart'])Rekap &amp; Laporan</a>
     </div>
+    @endif
 
     <div class="mt-auto flex flex-col gap-2.5">
+        @unless ($admin)
         <a href="{{ route('pengaturan') }}" class="nav-a {{ request()->routeIs('pengaturan') ? 'on' : '' }}" @if (request()->routeIs('pengaturan')) aria-current="page" @endif>@include('partials.ikon', ['n' => 'gear'])Pengaturan</a>
+        @endunless
         <div class="flex items-center gap-2.5 border-t border-[#34422F] px-2.5 py-3">
             <div class="flex h-8 w-8 items-center justify-center rounded-full bg-side-on text-xs font-semibold" aria-hidden="true">{{ $inisial }}</div>
-            <div class="min-w-0 flex-1 text-[13px] font-medium">{{ $nama }}<span class="block text-xs font-normal text-[#A9B2A3]">Juru Bayar</span></div>
+            <div class="min-w-0 flex-1 text-[13px] font-medium">{{ $nama }}<span class="block text-xs font-normal text-[#A9B2A3]">{{ \App\Models\User::PERAN[auth()->user()->role] ?? auth()->user()->role }}</span></div>
             <form method="post" action="{{ route('keluar') }}">
                 @csrf
                 <button type="submit" title="Keluar" aria-label="Keluar" class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-[#D5DACE] hover:bg-side-hover">@include('partials.ikon', ['n' => 'out'])</button>

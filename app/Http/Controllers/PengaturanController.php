@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LogAktivitas;
 use App\Models\Pengaturan;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,7 @@ class PengaturanController extends Controller
         ]);
         $d['lega'] = $request->boolean('lega') ? '1' : '';
         Pengaturan::simpan(array_map(fn ($v) => (string) $v, $d));
+        LogAktivitas::catat('pengaturan', 'Kop dan penanda tangan slip');
 
         return back()->with('ok', 'Pengaturan disimpan.');
     }

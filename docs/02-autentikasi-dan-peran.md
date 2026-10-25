@@ -22,18 +22,27 @@ kata sandi pengembangan ada di berkas itu. Jangan dipakai di server.
 
 ## Peran dan hak akses
 
-Semua peran yang sudah masuk boleh **melihat** semua halaman dan **mencatat/mengubah personel**.
+Ada tiga peran dengan pembagian kerja yang jelas:
+
+- **Admin**: hanya mengurus **akun pengguna** dan membaca **log aktivitas** ([11-admin-akun-dan-log.md](11-admin-akun-dan-log.md)).
+  Menunya cuma dua itu; halaman kerja (Dashboard, Proses Gaji, Slip, Data Personel, Potongan, Rekap, Pengaturan)
+  dialihkan ke `/akun` oleh middleware `operasional` (`BukanAdmin`). Setelah masuk, Admin langsung ke `/akun`.
+- **Juru Bayar**: seluruh pekerjaan gaji dan personel.
+- **Operator**: **melihat** semua halaman kerja dan **mencatat/mengubah personel**; tidak bisa menjalankan atau menghapus apa pun yang berat.
 
 | Hak (Gate) | admin | juru_bayar | operator |
 |---|:-:|:-:|:-:|
-| `jalankan-proses` (proses gaji) | ✔ | ✔ | — |
-| `hapus-proses` (hapus proses gaji sebelumnya) | ✔ | ✔ | — |
-| `impor-personel` (impor Excel) | ✔ | ✔ | — |
-| `hapus-personel` | ✔ | ✔ | — |
-| `kelola-potongan` (potongan, pinjaman, aturan) | ✔ | ✔ | — |
-| `ubah-pengaturan` (kop slip) | ✔ | ✔ | — |
+| `kelola-akun` (akun pengguna dan log aktivitas) | ✔ | — | — |
+| `jalankan-proses` (proses gaji) | — | ✔ | — |
+| `hapus-proses` (hapus proses gaji sebelumnya) | — | ✔ | — |
+| `impor-personel` (impor Excel) | — | ✔ | — |
+| `hapus-personel` | — | ✔ | — |
+| `kelola-potongan` (potongan, pinjaman, aturan) | — | ✔ | — |
+| `ubah-pengaturan` (kop slip) | — | ✔ | — |
 
 > Pembagian ini adalah **tebakan** (dokumen juru bayar tidak memuat peran, karena aplikasi aslinya satu pemakai).
-> Ubah di `AppServiceProvider::boot()` bila perlu.
+> Ubah di `AppServiceProvider::boot()` bila perlu. Sebelumnya Admin ikut memegang hak juru bayar; sekarang tidak.
+
+Akun yang dinonaktifkan Admin dikeluarkan pada permintaan berikutnya, juga bila sedang masuk (middleware `aktif` / `AkunAktif`).
 
 Nama pengguna yang login dipakai sebagai "siapa" di riwayat, menggantikan isian bebas "nama operator" di Pengaturan.

@@ -52,7 +52,7 @@
         </form>
     </section>
 @else
-    <p class="note">Hanya Admin dan Juru Bayar yang bisa menjalankan proses gaji. Anda tetap bisa melihat hasilnya di bawah.</p>
+    <p class="note">Hanya Juru Bayar yang bisa menjalankan proses gaji. Anda tetap bisa melihat hasilnya di bawah.</p>
 @endif
 
 <section class="card overflow-hidden p-0">

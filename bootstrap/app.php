@@ -13,7 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo(fn () => route('masuk'));
-        $middleware->redirectUsersTo(fn () => route('dashboard'));
+        $middleware->redirectUsersTo(fn () => auth()->user()?->punyaPeran('admin') ? route('akun.index') : route('dashboard'));
+        $middleware->alias([
+            'aktif' => \App\Http\Middleware\AkunAktif::class,
+            'operasional' => \App\Http\Middleware\BukanAdmin::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

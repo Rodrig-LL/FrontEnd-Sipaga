@@ -4,7 +4,7 @@
 php artisan test
 ```
 
-Bawaan: SQLite di memori (`phpunit.xml`). **55 tes, 452 pernyataan** (sama di SQLite dan MariaDB 10.4). Tes yang butuh Python (proses gaji, impor, potongan)
+Bawaan: SQLite di memori (`phpunit.xml`). **68 tes, 555 pernyataan** (sama di SQLite dan MariaDB 10.4). Tes yang butuh Python (proses gaji, impor, potongan)
 melompat otomatis bila `python/.venv` belum dipasang.
 
 | Berkas | Tes | Isi |
@@ -14,6 +14,7 @@ melompat otomatis bila `python/.venv` belum dipasang.
 | `ProsesGajiTest` | 13 | validasi unggahan, hak akses, jalur penuh dengan Python sungguhan, langkah 2–5, sisa folder proses lama, hapus proses (hak akses, tidak bisa saat berjalan kecuali macet, riwayat), stepper langkah 1, zona waktu WIB |
 | `HasilGajiTest` | 7 | Dashboard, Slip, Rekap, CSV, pemilih periode, kop slip di database, halaman tanpa proses |
 | `ImporPersonelTest` | 8 | pratinjau tanpa mengubah data, terapkan + riwayat, pratinjau basi, bank, berkas bukan nominatif, hak akses |
+| `AdminTest` | 13 | Admin hanya akun dan log (menu, pengalihan halaman kerja, 403 untuk peran lain), buat/ubah akun dan validasi, tidak bisa menurunkan diri sendiri, akun nonaktif dikeluarkan, log (masuk/gagal/keluar tanpa kata sandi, pekerjaan, saringan, trigger), nama lengkap di sidebar, ikon tab |
 | `PotonganTest` | 8 | potongan/pinjaman/pokok/aturan, halaman, hapus personel (cascade), Daftar Potongan lewat Python, impor potongan dan arisan |
 
 Perintah `php artisan test --filter <nama>` menjalankan satu tes. Tes yang memakai Python memanggil `jembatan.py`/`jembatan_personel.py` sungguhan

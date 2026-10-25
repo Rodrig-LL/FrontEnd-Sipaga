@@ -120,7 +120,7 @@ class PotonganTest extends TestCase
 
         $this->get('/potongan')->assertOk()->assertSee('Budi')->assertSee('Daftar Potongan dibuat setiap proses gaji');
         $this->get('/potongan?lihat=pinjaman')->assertOk()->assertSee('belum punya tenor')->assertSee('LURJA');
-        $this->get('/potongan?lihat=aturan')->assertOk()->assertSee('Batas pinjam per pemberi')->assertSee('Hanya Admin dan Juru Bayar');
+        $this->get('/potongan?lihat=aturan')->assertOk()->assertSee('Batas pinjam per pemberi')->assertSee('Hanya Juru Bayar');
         $this->get("/potongan/orang/{$budi->id}")->assertOk()->assertSee('Potongan tetap per bulan')->assertSee('LURJA');
         $this->get('/potongan/orang/9999')->assertNotFound();
     }

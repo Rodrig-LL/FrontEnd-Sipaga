@@ -17,7 +17,7 @@ Halaman Proses Gaji memperingatkan bila Python belum terpasang.
 ## Alur (`/gaji`)
 
 1. **Unggah berkas** (langkah 1): satu atau lebih PDF DPP (satu bank) + satu pembukuan bulan lalu `.xlsx` + bulan (opsional).
-   Ditolak bila belum ada personel TNI aktif (acuan pencocokan wajib). Hanya admin dan juru bayar (`jalankan-proses`).
+   Ditolak bila belum ada personel TNI aktif (acuan pencocokan wajib). Hanya juru bayar (`jalankan-proses`).
 2. **Periksa hasil baca**: per PDF (anggota, konsisten, lembar cocok, gagal dibaca, hasil scan) dan daftar anggota.
 3. **Cocokkan data**: pencocokan dengan pembukuan, dengan Data Personel (9 status), dan temuan (Tinggi/Sedang/Info).
 4. **Verifikasi selisih**: gaji yang berubah dari pembukuan lama ke angka DPP.
@@ -28,7 +28,7 @@ yang selalu menulis angka DPP (JML DIBAYARKAN).
 
 ## Menghapus proses sebelumnya
 
-Di daftar **Proses sebelumnya** (halaman `/gaji`), admin dan juru bayar (`hapus-proses`) bisa menghapus satu proses setelah konfirmasi.
+Di daftar **Proses sebelumnya** (halaman `/gaji`), juru bayar (`hapus-proses`) bisa menghapus satu proses setelah konfirmasi.
 
 - Yang terhapus: baris di `proses_gaji` **dan** seluruh `storage/app/private/proses/{id}/` (PDF/pembukuan yang diunggah, pembukuan baru, laporan validasi,
   Daftar Potongan, `hasil.json`). Slip, Dashboard, dan Rekap periode itu ikut hilang karena bersumber dari `hasil.json`; bila proses itu sedang dipilih,

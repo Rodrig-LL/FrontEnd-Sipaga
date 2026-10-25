@@ -95,7 +95,7 @@ class PersonelTest extends TestCase
         $this->assertSame('', $p->alasan_keluar);
     }
 
-    public function test_hanya_admin_dan_juru_bayar_boleh_menghapus(): void
+    public function test_hanya_juru_bayar_boleh_menghapus(): void
     {
         $this->sebagai()->post('/personel', $this->data());
         $p = Personel::firstOrFail();

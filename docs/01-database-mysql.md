@@ -4,7 +4,7 @@
 
 - Bawaan proyek: **SQLite** (`DB_CONNECTION=sqlite`), cukup untuk mencoba.
 - Dipakai sekarang: **MariaDB 10.4.32** dari XAMPP (`/opt/lampp`), lewat driver `mysql` Laravel.
-- Seluruh tes lulus di **kedua** database (55 tes, 452 pernyataan).
+- Seluruh tes lulus di **kedua** database (68 tes, 555 pernyataan).
 
 ## Cocok dengan Laravel 13?
 
@@ -55,13 +55,14 @@ Data uji di SQLite **tidak ikut pindah** (data sintetis; buat ulang lewat impor 
 | `sessions`, `cache`, `jobs` | bawaan Laravel (sesi dan antrean di database) |
 | `personel` | master personel (selaras `personel_db.py` Python) |
 | `riwayat` | catatan perubahan; **trigger** menolak UPDATE/DELETE |
+| `log_aktivitas` | log aktivitas aplikasi untuk Admin; **trigger** menolak UPDATE/DELETE |
 | `proses_gaji` | satu baris per proses gaji; hasil rinci di `storage/.../hasil.json` |
 | `pengaturan` | kop dan penanda tangan slip (kunci–nilai) |
 | `impor_personel` | pratinjau impor Excel (rencana dari Python) |
 | `potongan`, `pinjaman`, `pokok`, `aturan_potongan` | potongan satuan |
 
 Trigger riwayat memakai sintaks berbeda per driver (SQLite `RAISE(ABORT)`, MySQL/MariaDB `SIGNAL SQLSTATE '45000'`);
-keduanya dipasang oleh migrasi `2026_10_24_000001`.
+keduanya dipasang oleh migrasi `2026_10_24_000001` (riwayat) dan `2026_10_25_000002` (log aktivitas).
 
 ## Bug yang ketahuan karena pindah ke MariaDB
 

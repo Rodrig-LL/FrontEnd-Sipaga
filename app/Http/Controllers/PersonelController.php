@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SimpanPersonelRequest;
+use App\Models\LogAktivitas;
 use App\Models\Personel;
 use App\Models\Riwayat;
 use App\Services\PersonelService;
@@ -54,6 +55,7 @@ class PersonelController extends Controller
     public function store(SimpanPersonelRequest $request)
     {
         [$p] = $this->layanan->simpan($request->nilai(), $request->user());
+        LogAktivitas::catat('personel_tambah', $p->nama.' ('.$p->jenis.')');
 
         return redirect()->route('personel.index')->with('ok', 'Data '.$p->nama.' sudah disimpan.');
     }
@@ -61,6 +63,7 @@ class PersonelController extends Controller
     public function update(SimpanPersonelRequest $request, Personel $personel)
     {
         [$p, $berubah] = $this->layanan->simpan($request->nilai($personel->tandai), $request->user(), $personel);
+        if ($berubah) LogAktivitas::catat('personel_ubah', $p->nama.' ('.$p->jenis.')');
 
         return redirect()->route('personel.index')
             ->with('ok', $berubah ? 'Data '.$p->nama.' sudah disimpan.' : 'Tidak ada yang berubah pada data '.$p->nama.'.');
@@ -69,6 +72,7 @@ class PersonelController extends Controller
     public function destroy(Request $request, Personel $personel)
     {
         $this->layanan->hapus($personel, $request->user());
+        LogAktivitas::catat('personel_hapus', $personel->nama.' ('.$personel->jenis.')');
 
         return redirect()->route('personel.index')->with('ok', 'Data '.$personel->nama.' dihapus. Isi terakhirnya tersimpan di riwayat.');
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ImporPersonel;
+use App\Models\LogAktivitas;
 use App\Services\ImporGagal;
 use App\Services\ImporPersonelService;
 use Illuminate\Http\Request;
@@ -63,6 +64,7 @@ class ImporPersonelController extends Controller
         }
 
         $bagian = array_filter(['ditambah' => $n['tambah'], 'diperbarui' => $n['ubah'], 'ditandai' => $n['tandai'], 'pinjaman dicatat' => $n['pinjaman'], 'berhenti' => $n['berhenti']]);
+        LogAktivitas::catat('impor', 'Impor '.$impor->jenis.': '.(implode(', ', array_map(fn ($v, $k) => "$v $k", $bagian, array_keys($bagian))) ?: 'tidak ada perubahan'));
 
         return redirect()->route($impor->jenis === 'potongan' || $impor->jenis === 'arisan' ? 'potongan.index' : 'personel.index')
             ->with('ok', 'Impor diterapkan: '.(implode(', ', array_map(fn ($v, $k) => "$v $k", $bagian, array_keys($bagian))) ?: 'tidak ada perubahan').'.');
