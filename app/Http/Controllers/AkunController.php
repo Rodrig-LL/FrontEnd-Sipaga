@@ -17,7 +17,7 @@ class AkunController extends Controller
 
     public function create()
     {
-        return view('akun.form', ['u' => null]);
+        return view('akun.form', ['akun' => null]);
     }
 
     public function store(Request $request)
@@ -31,7 +31,7 @@ class AkunController extends Controller
 
     public function edit(User $akun)
     {
-        return view('akun.form', ['u' => $akun]);
+        return view('akun.form', ['akun' => $akun]);
     }
 
     public function update(Request $request, User $akun)

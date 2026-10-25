@@ -84,6 +84,16 @@ class AdminTest extends TestCase
         $this->post('/masuk', ['pengguna' => 'budi.s', 'sandi' => 'rahasia-123'])->assertRedirect(route('dashboard'));
     }
 
+    public function test_halaman_ubah_akun_tidak_merusak_ukuran_ikon_menu(): void
+    {
+        $admin = $this->sebagai();
+
+        // Variabel $u di view anak bocor ke partial ikon (ukuran ikon) bila dipakai untuk model akun.
+        $html = $this->get("/akun/{$admin->id}/ubah")->assertOk()->getContent();
+        preg_match('/<svg[^>]*?\swidth="(?!\d+")[^"]*"/', $html, $m); $this->assertSame([], $m);
+        $this->assertStringContainsString('<svg aria-hidden="true" width="18" height="18"', $html);
+    }
+
     public function test_validasi_akun(): void
     {
         $this->sebagai();

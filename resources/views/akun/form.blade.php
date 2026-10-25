@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', $u ? 'Ubah akun' : 'Tambah akun')
+@section('title', $akun ? 'Ubah akun' : 'Tambah akun')
 
 @php
     $e = fn ($k) => $errors->first($k);
-    $diri = $u && $u->is(auth()->user());
+    $diri = $akun && $akun->is(auth()->user());
 @endphp
 
 @section('konten')
@@ -11,34 +11,34 @@
 
 <header class="flex flex-wrap items-end justify-between gap-4">
     <div>
-        <p class="text-[13px] text-muted">{{ $u ? $u->name : 'Akun Pengguna' }}</p>
-        <h1 class="mt-1 text-[26px] font-semibold tracking-tight">{{ $u ? 'Ubah akun' : 'Tambah akun' }}</h1>
+        <p class="text-[13px] text-muted">{{ $akun ? $akun->name : 'Akun Pengguna' }}</p>
+        <h1 class="mt-1 text-[26px] font-semibold tracking-tight">{{ $akun ? 'Ubah akun' : 'Tambah akun' }}</h1>
         <p class="mt-1.5 text-[15px] text-body">Perubahan akun dicatat di log aktivitas. Kata sandi tidak pernah dicatat.</p>
     </div>
 </header>
 
-<form method="post" action="{{ $u ? route('akun.update', $u) : route('akun.store') }}" class="flex max-w-[820px] flex-col gap-4">
+<form method="post" action="{{ $akun ? route('akun.update', $akun) : route('akun.store') }}" class="flex max-w-[820px] flex-col gap-4">
     @csrf
-    @if ($u) @method('PUT') @endif
+    @if ($akun) @method('PUT') @endif
 
     <section class="card">
         <h2>Identitas</h2>
         <div class="mt-3 grid gap-x-5 gap-y-4 md:grid-cols-2">
             <label class="fl md:col-span-2">Nama lengkap
-                <input name="name" value="{{ old('name', $u?->name) }}" type="text" autocomplete="off" class="inp w-full text-base {{ $e('name') ? 'bad' : '' }}">
+                <input name="name" value="{{ old('name', $akun?->name) }}" type="text" autocomplete="off" class="inp w-full text-base {{ $e('name') ? 'bad' : '' }}">
                 @if ($e('name'))<span class="ferr" role="alert">{{ $e('name') }}</span>@endif
             </label>
             <label class="fl">Nama pengguna (untuk masuk)
-                <input name="username" value="{{ old('username', $u?->username) }}" type="text" autocomplete="off" autocapitalize="off" class="inp w-full font-mono text-base {{ $e('username') ? 'bad' : '' }}">
+                <input name="username" value="{{ old('username', $akun?->username) }}" type="text" autocomplete="off" autocapitalize="off" class="inp w-full font-mono text-base {{ $e('username') ? 'bad' : '' }}">
                 @if ($e('username'))<span class="ferr" role="alert">{{ $e('username') }}</span>@endif
             </label>
             <label class="fl">Peran
                 <select name="role" class="inp w-full text-base {{ $e('role') ? 'bad' : '' }}" @disabled($diri)>
                     @foreach (\App\Models\User::PERAN as $kode => $label)
-                        <option value="{{ $kode }}" @selected(old('role', $u?->role ?? 'operator') === $kode)>{{ $label }}</option>
+                        <option value="{{ $kode }}" @selected(old('role', $akun?->role ?? 'operator') === $kode)>{{ $label }}</option>
                     @endforeach
                 </select>
-                @if ($diri)<input type="hidden" name="role" value="{{ $u->role }}">@endif
+                @if ($diri)<input type="hidden" name="role" value="{{ $akun->role }}">@endif
                 @if ($e('role'))<span class="ferr" role="alert">{{ $e('role') }}</span>@endif
             </label>
         </div>
@@ -49,9 +49,9 @@
     </section>
 
     <section class="card">
-        <h2>{{ $u ? 'Ganti kata sandi' : 'Kata sandi' }}</h2>
+        <h2>{{ $akun ? 'Ganti kata sandi' : 'Kata sandi' }}</h2>
         <div class="mt-3 grid gap-x-5 gap-y-4 md:grid-cols-2">
-            <label class="fl">{{ $u ? 'Kata sandi baru' : 'Kata sandi' }} <span class="muted">(minimal 8 karakter)</span>
+            <label class="fl">{{ $akun ? 'Kata sandi baru' : 'Kata sandi' }} <span class="muted">(minimal 8 karakter)</span>
                 <input name="sandi" type="password" autocomplete="new-password" class="inp w-full text-base {{ $e('sandi') ? 'bad' : '' }}">
                 @if ($e('sandi'))<span class="ferr" role="alert">{{ $e('sandi') }}</span>@endif
             </label>
@@ -59,13 +59,13 @@
                 <input name="sandi_confirmation" type="password" autocomplete="new-password" class="inp w-full text-base">
             </label>
         </div>
-        @if ($u)<p class="muted mt-3.5">Kosongkan bila kata sandi tidak diganti.</p>@endif
+        @if ($akun)<p class="muted mt-3.5">Kosongkan bila kata sandi tidak diganti.</p>@endif
     </section>
 
-    @if ($u)
+    @if ($akun)
     <section class="card">
         <h2>Status</h2>
-        <label class="chk mt-2.5"><input type="checkbox" name="aktif" value="1" @checked($diri || $u->aktif) @disabled($diri)>Akun aktif (bisa masuk)</label>
+        <label class="chk mt-2.5"><input type="checkbox" name="aktif" value="1" @checked($diri || $akun->aktif) @disabled($diri)>Akun aktif (bisa masuk)</label>
         @if ($diri)
             <p class="muted mt-3.5">Anda tidak bisa menonaktifkan atau menurunkan peran akun Anda sendiri.</p>
         @else

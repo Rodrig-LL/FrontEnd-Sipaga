@@ -40,5 +40,5 @@ Slip menampilkan `[NAMA INSTANSI]` dan `[Kota]` sampai pengaturan ini diisi.
 ## Hal kecil
 
 - Tanda tangan slip memakai tanggal hari ini (bukan "[tanggal terbit]").
-- Variabel `$u`/`$w` dipakai komponen ikon (`partials/ikon`); jangan memakai nama itu untuk variabel loop di view
+- Variabel `$u`/`$w` dipakai komponen ikon (`partials/ikon`); jangan memakai nama itu untuk variabel loop atau model di view (pernah merusak ukuran ikon menu di halaman ubah akun)
   (variabel anak bocor ke tata letak dan merusak ikon sidebar).
