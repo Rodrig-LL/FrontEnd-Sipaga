@@ -4,7 +4,7 @@
 php artisan test
 ```
 
-Bawaan: SQLite di memori (`phpunit.xml`). **75 tes, 632 pernyataan** (sama di SQLite dan MariaDB 10.4). Tes yang butuh Python (proses gaji, impor, potongan)
+Bawaan: SQLite di memori (`phpunit.xml`). **75 tes, 640 pernyataan** (sama di SQLite dan MariaDB 10.4). Tes yang butuh Python (proses gaji, impor, potongan)
 melompat otomatis bila `python/.venv` belum dipasang.
 
 | Berkas | Tes | Isi |

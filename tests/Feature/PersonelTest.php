@@ -131,8 +131,15 @@ class PersonelTest extends TestCase
         $this->assertSame(['Alfa', 'Charlie', 'Hotel', 'bravo', 'Foxtrot'], $urutan('?urut=pangkat&jenis=TNI'));
         $this->assertSame($urutan(''), $urutan('?urut=ngawur&arah=sembarang'));      // nilai tak dikenal diabaikan
 
-        $this->get('/personel?urut=pangkat')->assertSee('Urutkan')->assertSee('Tertinggi dulu');
-        $this->get('/personel?urut=nama')->assertSee('A → Z');
+        // pengurutan hanya lewat judul kolom; kotak pencarian tidak punya pemilih urutan tetapi membawa urutan yang aktif
+        $this->get('/personel?urut=pangkat')->assertOk()->assertDontSee('name="urut"><', false)->assertDontSee('<label class="fl">Urutkan', false)->assertDontSee('<label class="fl">Arah', false)
+            ->assertSee('<input type="hidden" name="urut" value="pangkat"><input type="hidden" name="arah" value="turun">', false);
+
+        // jenis keanggotaan adalah pilihan di dalam kotak pencarian (bukan tombol terpisah), lengkap dengan jumlahnya
+        $h = $this->get('/personel?jenis=TNI')->assertOk()->assertSee('<label class="fl">Jenis keanggotaan', false)->assertDontSee('aria-label="Jenis personel"', false)->getContent();
+        $this->assertMatchesRegularExpression('~<option value="TNI" selected>TNI \(5\)</option>~', $h);
+        $this->assertStringContainsString('Semua (8)', $h);
+        $this->assertMatchesRegularExpression('~<form method="get".*?name="jenis".*?Cari</button>~s', $h);
     }
 
     public function test_judul_kolom_bisa_diklik_untuk_mengurutkan(): void

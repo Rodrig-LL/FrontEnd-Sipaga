@@ -13,11 +13,12 @@ Model hitung-gaji tiruan (tabel pangkat + `Demo`) **dibuang**: gaji kini datang 
 
 ## Halaman (`/personel`)
 
-- Daftar dengan pencarian (nama/NRP), saringan jenis, dan status: aktif, keluar, perlu dicek, aktif tanpa bank.
+- Daftar dengan satu kotak pencarian yang memuat **Cari** (nama/NRP), **Status** (aktif, keluar, perlu dicek, aktif tanpa bank), dan
+  **Jenis keanggotaan** (Semua, TNI, PNS, lengkap dengan jumlahnya). Ketiganya dikirim bersama dan langsung berlaku saat pilihan diganti.
 - **Urutkan** menurut **Nama**, **Pangkat / Gol.**, atau **Jenis keanggotaan**, dengan pilihan arah (parameter `urut` dan `arah`, ikut terbawa saat berpindah halaman).
-  Bisa lewat pemilih **Urutkan** dan **Arah** di bilah filter, atau **langsung klik judul kolom** di tabel (`partials/th-urut`): panah ▲/▼ menandai kolom
-  yang aktif (`aria-sort`), ↕ kolom lain. Klik kolom aktif membalik arahnya; klik kolom lain memulai dari arah bawaannya dan kembali ke halaman 1.
-  Keduanya memakai parameter yang sama, jadi selalu sinkron.
+  Pengurutan **hanya lewat judul kolom** di tabel (`partials/th-urut`): panah ▲/▼ menandai kolom yang aktif (`aria-sort`), ↕ kolom lain.
+  Klik kolom aktif membalik arahnya; klik kolom lain memulai dari arah bawaannya dan kembali ke halaman 1. Kotak pencarian tidak punya pemilih
+  urutan, tetapi membawa urutan yang aktif (input tersembunyi) supaya mencari atau menyaring tidak mengubahnya.
 
 
   | Urutkan | Naik | Turun |
