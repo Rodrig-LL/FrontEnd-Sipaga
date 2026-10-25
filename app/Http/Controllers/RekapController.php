@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\DataGaji;
 use App\Support\Halaman;
 use App\Support\Laporan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class RekapController extends Controller
 {
     public function index()
     {
-        return view('rekap.index', ['daftar' => Laporan::DAFTAR, 'rep' => Laporan::build('bulanan')]);
+        return view('rekap.index', ['daftar' => Laporan::DAFTAR, 'rep' => Laporan::build('bulanan'), 'ada' => DataGaji::ada(), 'hasil' => DataGaji::hasil()]);
     }
 
     public function show(Request $request, string $id)
     {
+        abort_unless(isset(Laporan::DAFTAR[$id]), 404);
         $rep = Laporan::build($id);
-        abort_unless($rep, 404);
+        if (! $rep) return redirect()->route('rekap.index');
         $hal = null;
         $galat = null;
         $rows = $rep['rows'];
@@ -31,9 +34,10 @@ class RekapController extends Controller
 
     public function unduh(string $id)
     {
+        abort_unless(isset(Laporan::DAFTAR[$id]), 404);
         $rep = Laporan::build($id);
-        abort_unless($rep, 404);
-        $periode = \Illuminate\Support\Str::slug(session('periode', 'Oktober 2026'));
+        if (! $rep) return redirect()->route('rekap.index');
+        $periode = Str::slug(DataGaji::bulan());
 
         return response()->streamDownload(function () use ($rep) {
             echo Laporan::csv($rep);

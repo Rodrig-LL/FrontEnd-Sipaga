@@ -15,7 +15,7 @@
 @layer components {
     /* tombol */
     .btn { @apply inline-flex h-10 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[#BDBAB0] bg-white px-3.5 text-sm text-ink no-underline hover:bg-[#F4F3EF]; }
-    .btn-p { @apply border-ink bg-ink font-medium text-white hover:bg-[#34382F]; }
+    .btn-p { @apply border-brand bg-brand font-medium text-white hover:bg-brand-dark; }
     .btn-o { @apply border-ink font-medium; }
     .btn-lg { @apply h-12 px-5 text-base font-semibold; }
     .btn[disabled], .btn.off { @apply pointer-events-none border-[#D6D3C8] bg-white text-[#8A8D84]; }
@@ -33,8 +33,8 @@
     .filters { @apply flex flex-wrap items-end gap-3 rounded-lg border border-line bg-white px-3.5 py-3; }
     .seg { @apply flex overflow-hidden rounded-md border border-[#BDBAB0]; }
     .seg a { @apply flex h-[42px] items-center border-l border-[#BDBAB0] bg-white px-3.5 text-sm text-ink no-underline first:border-l-0; }
-    .seg a[aria-current="true"] { @apply bg-ink font-medium text-white; }
-    .badge { @apply rounded-full bg-[#ECE9DD] px-2.5 py-1 text-xs font-medium text-[#5B5636]; }
+    .seg a[aria-current="true"] { @apply bg-brand font-medium text-white; }
+    .badge { @apply rounded-full bg-[#F6EBC4] px-2.5 py-1 text-xs font-medium text-[#6B5200]; }
     .note { @apply rounded-md border border-ink p-3.5 text-[15px] leading-normal; }
     .chk { @apply flex min-h-[40px] items-center gap-2.5 text-[15px]; }
     .chk input { @apply h-5 w-5; }
@@ -69,14 +69,16 @@
 
     /* langkah proses */
     .steps li { @apply flex flex-[1_1_160px] items-center gap-2.5 rounded-lg border border-line bg-white px-3 py-2.5 text-sm font-medium; }
-    .steps li.cur { @apply border-ink bg-ink text-white; }
+    .steps li.cur { @apply border-brand bg-brand text-white; }
     .dot { @apply flex h-6 w-6 flex-none items-center justify-center rounded-full text-xs font-semibold; }
-    .dot.done { @apply bg-ink text-white; }
-    .dot.now { @apply bg-white text-ink; }
+    .dot.done { @apply bg-brand text-white; }
+    .dot.now { @apply bg-white text-brand; }
     .dot.next { @apply border-2 border-[#C9C6BA] text-muted; }
 
     /* slip gaji */
     .slip { @apply min-w-0 max-w-[680px] rounded border border-line bg-white px-9 py-8 shadow-[0_1px_2px_rgba(28,31,26,.06),0_6px_20px_rgba(28,31,26,.06)]; }
+    .slip-note { @apply mt-3 flex items-start gap-1.5 text-xs leading-normal text-muted; }
+    .slip-note.alert-t { @apply font-semibold text-alert; }
     .slip-meta { @apply my-4 mb-[18px] grid grid-cols-2 gap-x-6 gap-y-1.5 text-[13px]; }
     .slip-meta div { @apply flex gap-2; }
     .slip-meta dt { @apply w-[104px] flex-none text-muted; }

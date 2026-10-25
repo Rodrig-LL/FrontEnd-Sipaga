@@ -4,7 +4,7 @@
 @section('konten')
 <section class="card w-full max-w-[400px] p-7" x-data="{ lihat: false }">
     <div class="flex items-center gap-2.5 pb-[18px]">
-        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-gold text-sm font-semibold text-side" aria-hidden="true">SG</div>
+        @include('partials.logo', ['ukuran' => 'h-12 w-14'])
         <div>
             <b class="block text-lg tracking-[.06em]">SIPAGA</b>
             <span class="block text-xs text-muted">Slip Gaji Terpadu</span>
@@ -24,7 +24,6 @@
         </label>
         <label class="chk"><input type="checkbox" x-model="lihat">Tampilkan kata sandi</label>
         <button type="submit" class="btn btn-p btn-lg">Masuk</button>
-        <p class="muted">Prototipe: isi nama pengguna dan kata sandi apa saja.</p>
     </form>
 </section>
 @endsection

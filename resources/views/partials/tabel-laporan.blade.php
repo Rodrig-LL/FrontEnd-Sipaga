@@ -14,7 +14,7 @@
             @else
                 <tr class="{{ $row['k'] }}">
                     @foreach ($row['c'] as $i => $sel)
-                        <td class="{{ ! empty($rep['cols'][$i]['r']) ? 'r num' : '' }}">{{ $sel }}</td>
+                        <td class="{{ ! empty($rep['cols'][$i]['r']) ? 'r num' : (! empty($rep['cols'][$i]['t']) ? 'num' : '') }}">{{ $sel }}</td>
                     @endforeach
                 </tr>
             @endif
@@ -24,7 +24,7 @@
         <tfoot>
             <tr>
                 @foreach ($rep['tfoot'] as $i => $sel)
-                    <td class="{{ ! empty($rep['cols'][$i]['r']) ? 'r num' : '' }}">{{ $sel }}</td>
+                    <td class="{{ ! empty($rep['cols'][$i]['r']) ? 'r num' : (! empty($rep['cols'][$i]['t']) ? 'num' : '') }}">{{ $sel }}</td>
                 @endforeach
             </tr>
         </tfoot>

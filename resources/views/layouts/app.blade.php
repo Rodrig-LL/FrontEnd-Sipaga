@@ -6,7 +6,7 @@
     <title>@yield('title') – SIPAGA</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="{{ session('pengaturan.lega') ? 'lega' : '' }}">
+<body class="{{ \App\Models\Pengaturan::ambil('lega') ? 'lega' : '' }}">
 <div class="flex min-h-screen flex-wrap">
     <div class="no-print flex-[1_1_216px] bg-side text-[#E6E9E1]">
         @include('partials.sidebar')

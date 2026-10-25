@@ -6,12 +6,11 @@
 
 <header class="flex flex-wrap items-end justify-between gap-4">
     <div>
-        <p class="text-[13px] text-muted">Laporan · {{ session('periode', 'Oktober 2026') }}</p>
+        <p class="text-[13px] text-muted">Laporan · {{ \App\Support\DataGaji::bulan() }}</p>
         <h1 class="mt-1 text-[26px] font-semibold tracking-tight">{{ $rep['title'] }}</h1>
         <p class="mt-1.5 text-[15px] text-body">{{ $rep['desc'] }}</p>
     </div>
     <div class="no-print flex flex-wrap items-end gap-2.5">
-        <span class="badge">Data contoh</span>
         <a class="btn" href="{{ route('rekap.unduh', $rep['id']) }}">Unduh Excel</a>
         @if ($rep['paged'])
             {{-- Cetak memuat semua baris di satu halaman lalu membuka jendela cetak. --}}

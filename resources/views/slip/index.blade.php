@@ -6,16 +6,20 @@
 
 <header class="flex flex-wrap items-end justify-between gap-4">
     <div>
-        <p class="text-[13px] text-muted">Periode gaji · {{ session('periode', 'Oktober 2026') }} · 486 siap terbit</p>
+        <p class="text-[13px] text-muted">Periode gaji · {{ $ada ? \App\Support\DataGaji::bulan().' · '.$total.' anggota' : 'belum ada' }}</p>
         <h1 class="mt-1 text-[26px] font-semibold tracking-tight">Slip Gaji</h1>
+        @if ($ada)<p class="mt-1.5 text-[15px] text-body">Rincian per anggota menurut DPP. Potongan satuan (koperasi, Persit, dan lain-lain) belum termasuk.</p>@endif
     </div>
     <div class="flex flex-wrap items-end gap-2.5">
-        <span class="badge">Data contoh</span>
-        <a class="btn" href="{{ route('slip.cetak', ['semua' => 1]) }}">Cetak / PDF semua slip</a>
+        @include('partials.periode')
+        @if ($ada)<a class="btn" href="{{ route('slip.cetak', ['semua' => 1]) }}">Cetak / PDF semua slip</a>@endif
     </div>
 </header>
 
-@include('partials.saring', ['opsi' => [['', 'Semua status'], ['siap', 'Siap terbit'], ['verif', 'Perlu dicek'], ['cetak', 'Sudah dicetak']]])
+@if (! $ada)
+    @include('partials.belum-ada', ['judul' => 'Slip gaji'])
+@else
+@include('partials.saring', ['opsi' => [['', 'Semua status'], ['siap', 'Tanpa temuan'], ['verif', 'Perlu dicek']]])
 
 <section class="card overflow-hidden p-0">
     {{-- Daftar centang: dikirim lewat GET ke halaman cetak. Alpine hanya untuk menghitung yang dicentang. --}}
@@ -37,8 +41,8 @@
                 <thead>
                     <tr>
                         <th scope="col" class="w-11 pl-3.5"><input type="checkbox" id="semua" class="h-[18px] w-[18px]" aria-label="Pilih semua di halaman ini" x-on:change.stop="semua($event)"></th>
-                        <th scope="col">Nama</th><th scope="col">Pangkat / Gol.</th><th scope="col">Jenis</th>
-                        <th scope="col" class="r">Penghasilan</th><th scope="col" class="r">Potongan</th><th scope="col" class="r">Diterima</th>
+                        <th scope="col">Nama</th><th scope="col">Pangkat</th><th scope="col">NRP</th>
+                        <th scope="col" class="r">Penghasilan</th><th scope="col" class="r">Potongan</th><th scope="col" class="r">Dibayarkan</th>
                         <th scope="col">Status</th><th scope="col" class="r pr-3.5">Aksi</th>
                     </tr>
                 </thead>
@@ -47,18 +51,16 @@
                         <tr>
                             <td class="w-11 pl-3.5"><input type="checkbox" name="ids[]" value="{{ $r['n'] }}" class="h-[18px] w-[18px]" aria-label="Pilih slip {{ $r['nama'] }}"></td>
                             <td><b>{{ $r['nama'] }}</b></td>
-                            <td>{{ $r['pangkat'] }}</td>
-                            <td>{{ $r['jenis'] }}</td>
+                            <td>{{ $r['pangkat'] ?: '—' }}</td>
+                            <td class="num">{{ $r['nrp'] }}</td>
                             <td class="r num">{{ rp($r['kotor']) }}</td>
                             <td class="r num">{{ rp($r['pot']) }}</td>
                             <td class="r num"><b>{{ rp($r['bersih']) }}</b></td>
                             <td class="whitespace-nowrap">
                                 @if ($r['stat'] === 'verif')
                                     <span class="alert-t">@include('partials.ikon', ['n' => 'err', 'u' => 16])Perlu dicek</span>
-                                @elseif ($r['stat'] === 'cetak')
-                                    <span class="text-muted">Sudah dicetak</span>
                                 @else
-                                    Siap terbit
+                                    Tanpa temuan
                                 @endif
                             </td>
                             <td class="r act pr-3.5"><a class="lnk" href="{{ route('slip.show', $r['n']) }}">Lihat</a></td>
@@ -72,4 +74,5 @@
     </form>
     @include('partials.pager', ['label' => 'slip'])
 </section>
+@endif
 @endsection
