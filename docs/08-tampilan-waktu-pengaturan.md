@@ -9,6 +9,13 @@
   Kontras teks diukur (WCAG, syarat 4,5:1): putih di `brand` 6,5; putih di `brand-dark` 9,1; `alert` di putih 7,4;
   teks menu di `side` 9,2; putih di menu aktif 8,1; judul grup menu 6,0; teks di monogram emas 7,1.
 
+## Halaman masuk (`/masuk`)
+
+Susunannya mengikuti portal `carakabinum.web.id`: lambang di tengah (tanpa kotak putih, karena `logo-instansi.png` berlatar transparan;
+`partials/logo` dengan opsi `polos`), lalu **DIREKTORAT AJUDAN JENDERAL** (tebal, hijau tua) dan **TNI ANGKATAN DARAT** (kecil, jarak huruf lebar),
+lalu **SIPAGA** dengan keterangan "Sistem Pengolahan Data dan Slip Gaji", baru kartu formulir masuk. Tulisan sumbernya huruf biasa; huruf besar
+diatur CSS. Di ponsel susunan tetap satu kolom tanpa gulir mendatar.
+
 ## Zona waktu dan bahasa
 
 `config/app.php` dulu terkunci `'timezone' => 'UTC'`, sehingga jam tampil mundur 7 jam. Sekarang:

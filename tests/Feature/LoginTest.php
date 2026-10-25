@@ -26,6 +26,14 @@ class LoginTest extends TestCase
         $this->get('/dasbor')->assertRedirect('/dashboard')->assertStatus(301);
     }
 
+    public function test_halaman_masuk_menampilkan_identitas_instansi_dan_aplikasi(): void
+    {
+        $this->get('/masuk')->assertOk()
+            ->assertSee('Direktorat Ajudan Jenderal')->assertSee('TNI Angkatan Darat')
+            ->assertSee('SIPAGA')->assertSee('Sistem Pengolahan Data dan Slip Gaji')
+            ->assertSee('alt="Lambang Vijaya Kusuma"', false)->assertSee('Nama pengguna');
+    }
+
     public function test_masuk_dengan_sandi_benar(): void
     {
         $this->pengguna();
