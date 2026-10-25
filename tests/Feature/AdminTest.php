@@ -82,6 +82,44 @@ class AdminTest extends TestCase
         $this->post('/masuk', ['pengguna' => 'budi.s', 'sandi' => 'rahasia-123'])->assertRedirect(route('dashboard'));
     }
 
+    public function test_admin_menghapus_akun_dan_jejaknya_tetap_ada(): void
+    {
+        $admin = $this->sebagai();
+        $u = User::factory()->create(['username' => 'lama', 'name' => 'Pak Lama', 'role' => 'juru_bayar', 'aktif' => true, 'password' => 'sandi-lama-1']);
+        \App\Models\Riwayat::create(['user_id' => $u->id, 'operator' => $u->name, 'aksi' => 'tambah', 'nrp' => '1', 'nama' => 'Ahmad', 'perubahan' => []]);
+        \App\Models\ImporPersonel::create(['user_id' => $u->id, 'jenis' => 'nominatif', 'status' => 'pratinjau', 'berkas' => [], 'rencana' => [], 'sidik' => 'x']);
+        LogAktivitas::catat('masuk', '', $u);
+
+        $this->get("/akun/{$u->id}/ubah")->assertOk()->assertSee('Hapus akun ini…');
+        $this->delete("/akun/{$u->id}")->assertRedirect(route('akun.index'))->assertSessionHas('ok');
+
+        $this->assertNull(User::find($u->id));
+        $this->assertSame('Pak Lama', \App\Models\Riwayat::firstOrFail()->operator);      // nama di riwayat tetap
+        $this->assertSame(1, \App\Models\Riwayat::count());
+        $this->assertSame(1, LogAktivitas::where('pengguna', 'Pak Lama')->count());      // log lamanya utuh
+        $hapus = LogAktivitas::where('aksi', 'akun_hapus')->firstOrFail();
+        $this->assertSame($admin->id, $hapus->user_id);
+        $this->assertStringContainsString('Pak Lama (lama)', $hapus->keterangan);
+
+        $this->post('/keluar');
+        $this->post('/masuk', ['pengguna' => 'lama', 'sandi' => 'sandi-lama-1'])->assertSessionHasErrors('sandi');
+        $this->assertGuest();
+    }
+
+    public function test_admin_tidak_bisa_menghapus_akun_sendiri_dan_peran_lain_tidak_boleh(): void
+    {
+        $admin = $this->sebagai();
+
+        $this->get("/akun/{$admin->id}/ubah")->assertOk()->assertDontSee('Hapus akun ini');
+        $this->delete("/akun/{$admin->id}")->assertRedirect(route('akun.edit', $admin))->assertSessionHasErrors('hapus');
+        $this->assertNotNull(User::find($admin->id));
+
+        $lain = User::factory()->create(['role' => 'juru_bayar']);
+        $this->sebagai('juru_bayar', ['username' => 'jb']);
+        $this->delete("/akun/{$lain->id}")->assertForbidden();
+        $this->assertNotNull(User::find($lain->id));
+    }
+
     public function test_halaman_ubah_akun_tidak_merusak_ukuran_ikon_menu(): void
     {
         $admin = $this->sebagai();

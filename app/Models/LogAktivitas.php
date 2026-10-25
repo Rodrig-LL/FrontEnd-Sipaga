@@ -17,7 +17,7 @@ class LogAktivitas extends Model
 
     public const AKSI = [
         'masuk' => 'Masuk', 'masuk_gagal' => 'Gagal masuk', 'keluar' => 'Keluar',
-        'akun_tambah' => 'Akun ditambah', 'akun_ubah' => 'Akun diubah',
+        'akun_tambah' => 'Akun ditambah', 'akun_ubah' => 'Akun diubah', 'akun_hapus' => 'Akun dihapus',
         'gaji_jalan' => 'Proses gaji dijalankan', 'gaji_selesai' => 'Proses gaji selesai', 'gaji_gagal' => 'Proses gaji gagal', 'gaji_hapus' => 'Proses gaji dihapus',
         'impor' => 'Impor Excel diterapkan',
         'personel_tambah' => 'Personel ditambah', 'personel_ubah' => 'Personel diubah', 'personel_hapus' => 'Personel dihapus',

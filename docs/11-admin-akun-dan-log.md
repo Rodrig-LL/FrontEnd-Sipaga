@@ -9,7 +9,10 @@ Hak aksesnya ada di [02-autentikasi-dan-peran.md](02-autentikasi-dan-peran.md).
 
 - **Tambah akun**: nama lengkap, nama pengguna (huruf, angka, `.` `_` `-`; unik), peran (Admin atau Juru Bayar), kata sandi (minimal 8 karakter, diulang dua kali).
 - **Ubah akun**: nama, nama pengguna, peran, status aktif, dan kata sandi baru. Kata sandi dikosongkan = tidak diganti.
-- Akun **tidak dihapus**, hanya dinonaktifkan, supaya namanya di log dan riwayat tetap bisa ditelusuri.
+- **Nonaktifkan** untuk menghentikan akses sementara (akun tetap ada); **hapus** bila akun memang tidak dipakai lagi.
+- **Hapus akun** (`DELETE /akun/{akun}`, tombol di bagian bawah halaman ubah, dengan konfirmasi "Ya, hapus"): permanen dan tercatat sebagai `akun_hapus`.
+  Admin tidak bisa menghapus akunnya sendiri (tombolnya tidak tampil, dan server menolaknya). Namanya tetap tertulis di riwayat dan log
+  karena keduanya menyimpan nama sebagai teks saat kejadian; kolom `user_id`-nya menjadi penanda biasa tanpa foreign key.
 - Admin **tidak bisa menurunkan atau menonaktifkan akunnya sendiri** (kolomnya dikunci di form dan diabaikan di server).
   Karena pelakunya selalu Admin aktif, selalu ada minimal satu Admin aktif.
 - Akun yang dinonaktifkan langsung dikeluarkan pada permintaan berikutnya (`AkunAktif`).
@@ -26,7 +29,7 @@ Dicatat lewat `LogAktivitas::catat($aksi, $keterangan)`. Yang tercatat:
 | Kode | Kejadian |
 |---|---|
 | `masuk`, `masuk_gagal`, `keluar` | login berhasil, percobaan gagal (nama pengguna yang diketik, **tanpa kata sandi**), keluar |
-| `akun_tambah`, `akun_ubah` | Admin membuat/mengubah akun (ringkasan perubahan; kata sandi hanya ditulis "diganti") |
+| `akun_tambah`, `akun_ubah`, `akun_hapus` | Admin membuat/mengubah/menghapus akun (ringkasan perubahan; kata sandi hanya ditulis "diganti") |
 | `gaji_jalan`, `gaji_selesai`, `gaji_gagal`, `gaji_hapus` | proses gaji dijalankan, selesai/gagal (dicatat oleh job atas nama pengunggah), dihapus |
 | `impor` | impor Excel diterapkan, beserta ringkasan jumlahnya |
 | `personel_tambah`, `personel_ubah`, `personel_hapus` | pencatatan personel (nama saja; rincian per kolom ada di riwayat personel) |

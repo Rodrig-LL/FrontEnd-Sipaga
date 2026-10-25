@@ -4,7 +4,7 @@
 
 - Bawaan proyek: **SQLite** (`DB_CONNECTION=sqlite`), cukup untuk mencoba.
 - Dipakai sekarang: **MariaDB 10.4.32** dari XAMPP (`/opt/lampp`), lewat driver `mysql` Laravel.
-- Seluruh tes lulus di **kedua** database (69 tes, 565 pernyataan).
+- Seluruh tes lulus di **kedua** database (71 tes, 588 pernyataan).
 
 ## Cocok dengan Laravel 13?
 
@@ -62,7 +62,7 @@ Data uji di SQLite **tidak ikut pindah** (data sintetis; buat ulang lewat impor 
 | `potongan`, `pinjaman`, `pokok`, `aturan_potongan` | potongan satuan |
 
 Trigger riwayat memakai sintaks berbeda per driver (SQLite `RAISE(ABORT)`, MySQL/MariaDB `SIGNAL SQLSTATE '45000'`);
-keduanya dipasang oleh migrasi `2026_10_24_000001` (riwayat) dan `2026_10_25_000002` (log aktivitas).
+keduanya dipasang oleh migrasi `2026_10_24_000001` (riwayat), `2026_10_25_000002` (log aktivitas), dan `2026_10_25_000004` (dipasang ulang setelah FK `riwayat.user_id` dilepas, supaya akun bisa dihapus).
 
 ## Bug yang ketahuan karena pindah ke MariaDB
 

@@ -34,6 +34,7 @@ Route::middleware(['auth', 'aktif'])->group(function () {
         Route::post('/akun', [AkunController::class, 'store'])->name('akun.store');
         Route::get('/akun/{akun}/ubah', [AkunController::class, 'edit'])->whereNumber('akun')->name('akun.edit');
         Route::put('/akun/{akun}', [AkunController::class, 'update'])->whereNumber('akun')->name('akun.update');
+        Route::delete('/akun/{akun}', [AkunController::class, 'destroy'])->whereNumber('akun')->name('akun.hapus');
         Route::get('/log', [LogAktivitasController::class, 'index'])->name('log.index');
     });
 });

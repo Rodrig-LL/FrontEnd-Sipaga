@@ -78,4 +78,22 @@
         <button type="submit" class="btn btn-p btn-lg">Simpan</button>
     </div>
 </form>
+
+@if ($akun && ! $diri)
+    <form method="post" action="{{ route('akun.hapus', $akun) }}" class="mt-2 max-w-[820px]" x-data="{ yakin: false }">
+        @csrf @method('DELETE')
+        <section class="card">
+            <h2>Hapus akun</h2>
+            <p class="muted my-1.5 leading-normal">Akun dihapus permanen dan tidak bisa masuk lagi. Namanya tetap tertulis di riwayat dan log aktivitas.
+                Bila hanya ingin menghentikan akses sementara, cukup nonaktifkan akunnya.</p>
+            @if ($errors->has('hapus'))<p class="ferr mb-2" role="alert">{{ $errors->first('hapus') }}</p>@endif
+            <button type="button" class="btn" x-show="! yakin" x-on:click="yakin = true">Hapus akun ini…</button>
+            <div class="flex flex-wrap items-center gap-2.5" x-show="yakin" x-cloak>
+                <span class="font-semibold">Hapus akun {{ $akun->name }} secara permanen?</span>
+                <button type="submit" class="btn btn-p !border-alert !bg-alert">Ya, hapus</button>
+                <button type="button" class="btn" x-on:click="yakin = false">Batal</button>
+            </div>
+        </section>
+    </form>
+@endif
 @endsection

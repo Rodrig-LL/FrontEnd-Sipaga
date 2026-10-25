@@ -60,6 +60,20 @@ class AkunController extends Controller
         return redirect()->route('akun.index')->with('ok', $ubah ? 'Akun '.$akun->name.' disimpan.' : 'Tidak ada yang berubah.');
     }
 
+    /** Hapus permanen. Namanya tetap tertulis di riwayat dan log (disimpan sebagai teks saat kejadian). */
+    public function destroy(Request $request, User $akun)
+    {
+        if ($akun->is($request->user())) {
+            return redirect()->route('akun.edit', $akun)->withErrors(['hapus' => 'Anda tidak bisa menghapus akun Anda sendiri.']);
+        }
+
+        $ringkas = "{$akun->name} ({$akun->username}), peran ".(User::PERAN[$akun->role] ?? $akun->role);
+        $akun->delete();
+        LogAktivitas::catat('akun_hapus', $ringkas);
+
+        return redirect()->route('akun.index')->with('ok', 'Akun '.$akun->name.' dihapus.');
+    }
+
     private function aturan(?User $akun): array
     {
         return [

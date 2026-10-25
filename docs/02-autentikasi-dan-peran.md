@@ -50,5 +50,5 @@ Nama pengguna yang login dipakai sebagai "siapa" di riwayat, menggantikan isian 
 
 Migrasi `2026_10_25_000003_hapus_peran_operator` mengubah akun Operator yang sudah ada menjadi **Juru Bayar yang dinonaktifkan**,
 supaya tidak ada yang diam-diam mendapat hak lebih besar. Admin memutuskan di Akun Pengguna (aktifkan, atau biarkan nonaktif).
-Akun tidak dihapus karena namanya sudah tercatat di riwayat dan log. Pengguna contoh `operator` juga dihapus dari seeder.
+Admin juga bisa menghapusnya (lihat [11-admin-akun-dan-log.md](11-admin-akun-dan-log.md)); namanya tetap tertulis di riwayat dan log. Pengguna contoh `operator` juga dihapus dari seeder.
 Gate tetap dipertahankan walau kini hanya Juru Bayar yang memegangnya (Admin dialihkan sebelum sampai ke sana).

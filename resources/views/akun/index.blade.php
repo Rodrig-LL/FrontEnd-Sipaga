@@ -6,7 +6,7 @@
     <div>
         <p class="text-[13px] text-muted">{{ $daftar->where('aktif', true)->count() }} akun aktif dari {{ $daftar->count() }}</p>
         <h1 class="mt-1 text-[26px] font-semibold tracking-tight">Akun Pengguna</h1>
-        <p class="mt-1.5 text-[15px] text-body">Akun tidak dihapus, hanya dinonaktifkan, supaya jejaknya di log aktivitas tetap jelas.</p>
+        <p class="mt-1.5 text-[15px] text-body">Nonaktifkan akun untuk menghentikan akses sementara; hapus bila akun memang tidak dipakai lagi.</p>
     </div>
     <a class="btn btn-p" href="{{ route('akun.create') }}">Tambah akun</a>
 </header>
