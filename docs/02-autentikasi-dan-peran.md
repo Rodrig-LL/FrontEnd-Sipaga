@@ -27,6 +27,7 @@ Semua peran yang sudah masuk boleh **melihat** semua halaman dan **mencatat/meng
 | Hak (Gate) | admin | juru_bayar | operator |
 |---|:-:|:-:|:-:|
 | `jalankan-proses` (proses gaji) | ✔ | ✔ | — |
+| `hapus-proses` (hapus proses gaji sebelumnya) | ✔ | ✔ | — |
 | `impor-personel` (impor Excel) | ✔ | ✔ | — |
 | `hapus-personel` | ✔ | ✔ | — |
 | `kelola-potongan` (potongan, pinjaman, aturan) | ✔ | ✔ | — |

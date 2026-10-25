@@ -19,6 +19,11 @@ class JembatanPython
         $disk = Storage::disk('local');
         $p->update(['status' => 'berjalan', 'mulai_at' => now(), 'galat' => null]);
 
+        // Hasil proses sebelumnya yang kebetulan memakai id yang sama (mis. sesudah database di-reset) akan
+        // memicu penjaga "file hasil sudah ada" di Python dan bisa terbaca sebagai hasil proses ini.
+        $disk->deleteDirectory($p->folder('hasil'));
+        $disk->delete($p->folder('hasil.json'));
+
         $disk->put($p->folder('tugas.json'), json_encode([
             'pdf' => array_map(fn ($n) => $p->path('masuk/'.$n), $p->berkas['pdf']),
             'buku' => $p->path('masuk/'.$p->berkas['buku']),

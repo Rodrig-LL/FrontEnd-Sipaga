@@ -24,16 +24,7 @@
     </div>
 </header>
 
-<ol class="steps flex flex-wrap gap-1.5" aria-label="Tahapan proses">
-    @foreach ($label as $i => $nama)
-        @php $no = $i + 1; $kelas = $no < $langkah ? 'done' : ($no === $langkah ? 'now' : 'next'); @endphp
-        <li class="{{ $no === $langkah ? 'cur' : '' }}" @if ($no === $langkah) aria-current="step" @endif>
-            <a href="{{ $url($no) }}" class="flex items-center gap-2.5 text-inherit no-underline">
-                <span class="dot {{ $kelas }}" aria-hidden="true">@if ($no < $langkah)@include('partials.ikon', ['n' => 'ok', 'u' => 13, 'w' => 3])@else{{ $no }}@endif</span>{{ $nama }}
-            </a>
-        </li>
-    @endforeach
-</ol>
+@include('gaji._tahap', ['tautan' => array_combine(range(1, 5), array_map($url, range(1, 5)))])
 
 @include('gaji.l'.$langkah)
 

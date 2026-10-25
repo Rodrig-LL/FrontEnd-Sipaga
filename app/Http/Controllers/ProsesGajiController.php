@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Jobs\JalankanProsesGaji;
 use App\Models\Personel;
 use App\Models\ProsesGaji;
+use App\Models\Riwayat;
+use App\Support\DataGaji;
 use App\Support\Halaman;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 /** Proses gaji sungguhan: unggah DPP + pembukuan lalu, Python yang bekerja (lewat JembatanPython), hasilnya dibaca di sini. */
@@ -19,7 +23,7 @@ class ProsesGajiController extends Controller
     public function index()
     {
         return view('gaji.index', [
-            'daftar' => ProsesGaji::with('user')->latest('id')->limit(20)->get(),
+            'daftar' => ProsesGaji::with('user')->latest('id')->limit(20)->get(), 'aktif' => DataGaji::aktif(),
             'pythonAda' => is_file(config('sipaga.python')),
             'bolehJalan' => Gate::allows('jalankan-proses'),
             'tniAktif' => Personel::aktif()->where('jenis', 'TNI')->count(),
@@ -62,12 +66,35 @@ class ProsesGajiController extends Controller
 
         $proses = ProsesGaji::create(['user_id' => $request->user()->id, 'bulan_paksa' => (string) $request->input('bulan'),
             'berkas' => ['pdf' => $pdf, 'buku' => $buku]]);
+        Storage::disk('local')->deleteDirectory($proses->folder());      // sisa proses lama dengan id yang sama (mis. sesudah database di-reset)
         foreach ($request->file('pdf') as $i => $f) $f->storeAs($proses->folder('masuk'), $pdf[$i], 'local');
         $request->file('buku')->storeAs($proses->folder('masuk'), $buku, 'local');
 
         JalankanProsesGaji::dispatch($proses);
 
         return redirect()->route('gaji.show', $proses);
+    }
+
+    /**
+     * Hapus satu proses: barisnya, seluruh berkas di storage (PDF/pembukuan yang diunggah dan hasil Python), dan catat di riwayat.
+     * Proses yang masih berjalan tidak boleh dihapus, kecuali sudah macet melewati batas waktu.
+     */
+    public function hapus(Request $request, ProsesGaji $proses)
+    {
+        if (! $proses->bisaDihapus()) {
+            return redirect()->route('gaji.index')->withErrors(['hapus' => 'Proses ini masih berjalan. Tunggu sampai selesai, lalu hapus.']);
+        }
+
+        $ringkas = "#{$proses->id} ".($proses->bulan ?: '(bulan tidak terbaca)').' · '.$proses->status;
+        DB::transaction(function () use ($proses, $request, $ringkas) {
+            Riwayat::create(['user_id' => $request->user()->id, 'operator' => $request->user()->name, 'aksi' => 'proses: hapus', 'personel_id' => null,
+                'nrp' => '', 'nama' => '', 'perubahan' => ['Proses gaji' => [$ringkas, ''], 'Berkas' => [implode(', ', array_merge($proses->berkas['pdf'] ?? [], [$proses->berkas['buku'] ?? ''])), '']]]);
+            $proses->delete();
+        });
+        Storage::disk('local')->deleteDirectory($proses->folder());
+        DataGaji::lupakan();
+
+        return redirect()->route('gaji.index')->with('ok', 'Proses '.($proses->bulan ?: '#'.$proses->id).' dihapus beserta berkas hasilnya.');
     }
 
     public function show(ProsesGaji $proses)

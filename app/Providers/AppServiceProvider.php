@@ -25,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('kelola-potongan', fn (User $u) => $u->punyaPeran('admin', 'juru_bayar'));
         Gate::define('impor-personel', fn (User $u) => $u->punyaPeran('admin', 'juru_bayar'));
         Gate::define('ubah-pengaturan', fn (User $u) => $u->punyaPeran('admin', 'juru_bayar'));
+        Gate::define('hapus-proses', fn (User $u) => $u->punyaPeran('admin', 'juru_bayar'));
         Gate::define('jalankan-proses', fn (User $u) => $u->punyaPeran('admin', 'juru_bayar'));
         Gate::define('hapus-personel', fn (User $u) => $u->punyaPeran('admin', 'juru_bayar'));
     }

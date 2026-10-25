@@ -26,6 +26,22 @@ Halaman Proses Gaji memperingatkan bila Python belum terpasang.
 Wizard demo lama (pilih "angka lama/baru", "tautkan manual", status di session) **dihapus**: fiturnya tidak ada di aplikasi Python,
 yang selalu menulis angka DPP (JML DIBAYARKAN).
 
+## Menghapus proses sebelumnya
+
+Di daftar **Proses sebelumnya** (halaman `/gaji`), admin dan juru bayar (`hapus-proses`) bisa menghapus satu proses setelah konfirmasi.
+
+- Yang terhapus: baris di `proses_gaji` **dan** seluruh `storage/app/private/proses/{id}/` (PDF/pembukuan yang diunggah, pembukuan baru, laporan validasi,
+  Daftar Potongan, `hasil.json`). Slip, Dasbor, dan Rekap periode itu ikut hilang karena bersumber dari `hasil.json`; bila proses itu sedang dipilih,
+  halaman-halaman itu beralih ke proses selesai terbaru berikutnya (atau "belum ada").
+- **Unduh dulu** berkas yang masih dibutuhkan.
+- Proses yang `menunggu`/`berjalan` tidak bisa dihapus, kecuali macet (tidak ada kemajuan melewati `SIPAGA_PYTHON_TIMEOUT` + 2 menit).
+- Tercatat di riwayat (`/personel/riwayat`) sebagai `proses: hapus`: nomor, bulan, status, dan nama berkas.
+
+## Tampilan langkah 1
+
+`/gaji` adalah langkah 1 dari 5 dan memakai stepper (`gaji/_tahap.blade.php`) serta tata letak yang sama dengan langkah 2–5. Langkah 2–5 pada stepper
+membuka hasil proses yang sedang dipilih di pemilih periode (nonaktif bila belum ada proses selesai).
+
 ## Jembatan
 
 ```
@@ -49,6 +65,8 @@ Status proses di tabel `proses_gaji`: `menunggu → berjalan → selesai | gagal
 ## Pengaman
 
 - Nama berkas unggahan dibersihkan; dua PDF bernama sama ditolak.
+- Setiap proses memakai folder `proses/{id}` sendiri, dan isinya dikosongkan sebelum dipakai. Tanpa itu, id yang dipakai ulang (mis. sesudah
+  `migrate:fresh`) mewarisi hasil lama dan memicu penjaga timpa Python ("file hasil sudah ada di folder tujuan").
 - Unduhan hanya untuk berkas keluaran Python (`/gaji/{id}/unduh/{nama}` memeriksa daftar); `tugas.json` dan jalur lain 404.
 - Batas unggahan di `php.ini` (`upload_max_filesize`, `post_max_size`) perlu dinaikkan; PDF DPP bisa jauh lebih besar dari 2 MB.
 

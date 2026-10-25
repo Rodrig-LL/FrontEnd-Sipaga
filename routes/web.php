@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     // Proses gaji sungguhan (Python di belakangnya)
     Route::get('/gaji', [ProsesGajiController::class, 'index'])->name('gaji.index');
     Route::post('/gaji', [ProsesGajiController::class, 'store'])->name('gaji.store');
+    Route::delete('/gaji/{proses}', [ProsesGajiController::class, 'hapus'])->whereNumber('proses')->middleware('can:hapus-proses')->name('gaji.hapus');
     Route::get('/gaji/{proses}', [ProsesGajiController::class, 'show'])->whereNumber('proses')->name('gaji.show');
     Route::get('/gaji/{proses}/langkah/{langkah}', [ProsesGajiController::class, 'langkah'])->whereNumber(['proses', 'langkah'])->name('gaji.langkah');
     Route::get('/gaji/{proses}/unduh/{nama}', [ProsesGajiController::class, 'unduh'])->whereNumber('proses')->name('gaji.unduh');

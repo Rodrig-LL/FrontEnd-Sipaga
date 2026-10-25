@@ -38,6 +38,12 @@ class ProsesGaji extends Model
         return in_array($this->status, ['selesai', 'gagal'], true);
     }
 
+    /** Boleh dihapus bila sudah selesai/gagal, atau macet (status berjalan/menunggu tanpa kemajuan melewati batas waktu proses). */
+    public function bisaDihapus(): bool
+    {
+        return $this->selesai() || $this->updated_at->lt(now()->subSeconds(config('sipaga.python_timeout') + 120));
+    }
+
     /** Isi hasil.json (ringkasan + rincian per orang); null bila belum ada. */
     public function hasil(): ?array
     {
