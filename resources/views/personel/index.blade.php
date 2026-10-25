@@ -23,7 +23,10 @@
         <table class="t min-w-[960px]">
             <thead>
                 <tr>
-                    <th scope="col" class="pl-3.5">Nama</th><th scope="col">Pangkat / Gol.</th><th scope="col">NRP / NIP</th><th scope="col">Jenis</th>
+                    @include('partials.th-urut', ['kode' => 'nama', 'label' => 'Nama', 'bawaan' => 'naik', 'kelas' => 'pl-3.5'])
+                    @include('partials.th-urut', ['kode' => 'pangkat', 'label' => 'Pangkat / Gol.', 'bawaan' => 'turun'])
+                    <th scope="col">NRP / NIP</th>
+                    @include('partials.th-urut', ['kode' => 'jenis', 'label' => 'Jenis', 'bawaan' => 'naik'])
                     <th scope="col">Jabatan</th><th scope="col">Bank</th><th scope="col">Status</th><th scope="col" class="r pr-3.5">Aksi</th>
                 </tr>
             </thead>

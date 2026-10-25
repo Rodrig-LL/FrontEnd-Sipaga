@@ -4,13 +4,13 @@
 php artisan test
 ```
 
-Bawaan: SQLite di memori (`phpunit.xml`). **74 tes, 622 pernyataan** (sama di SQLite dan MariaDB 10.4). Tes yang butuh Python (proses gaji, impor, potongan)
+Bawaan: SQLite di memori (`phpunit.xml`). **75 tes, 632 pernyataan** (sama di SQLite dan MariaDB 10.4). Tes yang butuh Python (proses gaji, impor, potongan)
 melompat otomatis bila `python/.venv` belum dipasang.
 
 | Berkas | Tes | Isi |
 |---|:-:|---|
 | `LoginTest` | 9 | login, pesan galat seragam, akun nonaktif, sandi ter-hash, batas percobaan, keluar, URL lama `/dasbor` dialihkan ke `/dashboard`, identitas instansi di halaman masuk |
-| `PersonelTest` | 12 | tambah/ubah/keluar/hapus, validasi, riwayat per kolom, trigger riwayat, hak hapus, daftar dan saringan, pengurutan (nama, pangkat/gol., jenis), peringkat pangkat, halaman riwayat memuat semua jenis catatan |
+| `PersonelTest` | 13 | tambah/ubah/keluar/hapus, validasi, riwayat per kolom, trigger riwayat, hak hapus, daftar dan saringan, pengurutan (nama, pangkat/gol., jenis, judul kolom bisa diklik), peringkat pangkat, halaman riwayat memuat semua jenis catatan |
 | `ProsesGajiTest` | 13 | validasi unggahan, hak akses, jalur penuh dengan Python sungguhan, langkah 2–5, sisa folder proses lama, hapus proses (hak akses, tidak bisa saat berjalan kecuali macet, riwayat), stepper langkah 1, zona waktu WIB |
 | `HasilGajiTest` | 7 | Dashboard, Slip, Rekap, CSV, pemilih periode, kop slip di database, halaman tanpa proses |
 | `ImporPersonelTest` | 8 | pratinjau tanpa mengubah data, terapkan + riwayat, pratinjau basi, bank, berkas bukan nominatif, hak akses |

@@ -135,6 +135,26 @@ class PersonelTest extends TestCase
         $this->get('/personel?urut=nama')->assertSee('A → Z');
     }
 
+    public function test_judul_kolom_bisa_diklik_untuk_mengurutkan(): void
+    {
+        $this->sebagai();
+        Personel::create(['jenis' => 'TNI', 'nama' => 'Alfa', 'nrp' => '1', 'nrp_asli' => '1']);
+
+        // bawaan: jenis naik. Kolom lain dimulai dari arah bawaannya (pangkat: tertinggi dulu), halaman kembali ke 1
+        $h = $this->get('/personel?halaman=1')->assertOk()->assertSee('aria-sort="ascending"', false)->getContent();
+        $this->assertSame(1, substr_count($h, 'aria-sort='));
+        $this->assertMatchesRegularExpression('~<th scope="col" class=""\s+aria-sort="ascending"\s*>\s*<a href="[^"]*urut=jenis&amp;arah=turun~', $h);   // klik lagi = dibalik
+        $this->assertStringContainsString('urut=nama&amp;arah=naik', $h);
+        $this->assertStringContainsString('urut=pangkat&amp;arah=turun', $h);
+        $this->assertStringNotContainsString('halaman=', preg_replace('~<form[^>]*>.*?</form>~s', '', $h));      // tautan judul kolom tidak membawa nomor halaman
+
+        // kolom yang sedang aktif dibalik arahnya, dan penanda aria-sort ikut berpindah
+        $h = $this->get('/personel?urut=nama&arah=naik')->getContent();
+        $this->assertMatchesRegularExpression('~aria-sort="ascending"\s*>\s*<a href="[^"]*urut=nama&amp;arah=turun~', $h);
+        $h = $this->get('/personel?urut=pangkat')->assertSee('aria-sort="descending"', false)->getContent();
+        $this->assertMatchesRegularExpression('~aria-sort="descending"\s*>\s*<a href="[^"]*urut=pangkat&amp;arah=naik~', $h);
+    }
+
     public function test_peringkat_pangkat_dan_golongan(): void
     {
         $p = fn (string $j, string $t) => \App\Support\Pangkat::peringkat($j, $t);
