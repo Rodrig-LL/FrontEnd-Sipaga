@@ -8,6 +8,7 @@ use App\Models\Personel;
 use App\Models\Riwayat;
 use App\Services\PersonelService;
 use App\Support\Halaman;
+use App\Support\Pangkat;
 use Illuminate\Http\Request;
 
 class PersonelController extends Controller
@@ -28,17 +29,54 @@ class PersonelController extends Controller
             ->when($status === 'keluar', fn ($w) => $w->where('status', 'keluar'))
             ->when($status === 'tandai', fn ($w) => $w->where('tandai', '!=', ''))
             ->when($status === 'tanpa_bank', fn ($w) => $w->aktif()->where('bank', ''))
-            ->orderByDesc('jenis')->orderBy('nama')->orderBy('id')
+            ->orderBy('id')
             ->get()->all();
+
+        // Bawaan: jenis keanggotaan (TNI dulu), lalu nama. Pangkat paling masuk akal dilihat dari yang tertinggi.
+        $urut = in_array($request->query('urut'), ['nama', 'pangkat', 'jenis'], true) ? $request->query('urut') : 'jenis';
+        $arah = in_array($request->query('arah'), ['naik', 'turun'], true) ? $request->query('arah') : ($urut === 'pangkat' ? 'turun' : 'naik');
+        $daftar = $this->urutkan($daftar, $urut, $arah);
         [$hal, $galat] = Halaman::bagi($daftar, 25, $request);
 
         $per = Personel::selectRaw('jenis, count(*) as n')->groupBy('jenis')->pluck('n', 'jenis');
         $jumlah = ['' => $per->sum(), 'TNI' => $per['TNI'] ?? 0, 'PNS' => $per['PNS'] ?? 0];
         $diubah = Personel::max('updated_at');
 
-        return view('personel.index', compact('hal', 'galat', 'q', 'jenis', 'status', 'jumlah', 'diubah') + [
+        return view('personel.index', compact('hal', 'galat', 'q', 'jenis', 'status', 'jumlah', 'diubah', 'urut', 'arah') + [
             'aktif' => Personel::aktif()->count(),
         ]);
+    }
+
+    /**
+     * Urutkan menurut nama, pangkat/golongan, atau jenis keanggotaan. Urutan sama selalu jatuh ke nama, lalu id.
+     * Pangkat TNI dan golongan PNS tidak sebanding, jadi keduanya tetap dikelompokkan per jenis (TNI dulu);
+     * "naik" = terendah dulu, "turun" = tertinggi dulu. Pangkat kosong atau tak dikenal selalu di paling bawah kelompoknya.
+     *
+     * @param  list<Personel>  $daftar  sudah berurutan menurut id (usort stabil)
+     */
+    private function urutkan(array $daftar, string $urut, string $arah): array
+    {
+        $tanda = $arah === 'turun' ? -1 : 1;
+        $nama = fn (Personel $a, Personel $b) => strcmp(mb_strtolower($a->nama), mb_strtolower($b->nama));
+        $kelompok = fn (Personel $p) => $p->jenis === 'TNI' ? 0 : 1;
+
+        usort($daftar, function (Personel $a, Personel $b) use ($urut, $tanda, $nama, $kelompok) {
+            if ($urut === 'nama') return $tanda * $nama($a, $b);
+
+            $j = $kelompok($a) <=> $kelompok($b);
+            if ($urut === 'jenis') return $j !== 0 ? $tanda * $j : $nama($a, $b);
+
+            if ($j !== 0) return $j;
+            $ra = Pangkat::peringkat($a->jenis, $a->pangkat);
+            $rb = Pangkat::peringkat($b->jenis, $b->pangkat);
+            if ($ra === $rb) return $nama($a, $b);
+            if ($ra === null) return 1;
+            if ($rb === null) return -1;
+
+            return $tanda * ($ra <=> $rb);
+        });
+
+        return $daftar;
     }
 
     public function create()

@@ -12,6 +12,23 @@
                 @endforeach
             </select>
         </label>
+        @isset($urut)
+        {{-- Pengurutan (opsional). Mengganti kriteria mengosongkan arah supaya arah bawaan kriteria baru yang dipakai. --}}
+        @php $namaArah = ['nama' => ['A → Z', 'Z → A'], 'pangkat' => ['Terendah dulu', 'Tertinggi dulu'], 'jenis' => ['TNI dulu', 'PNS dulu']][$urut]; @endphp
+        <label class="fl">Urutkan
+            <select class="inp min-w-[170px]" name="urut" x-data x-on:change="$el.form.elements.arah.disabled = true; $el.form.submit()">
+                <option value="nama" @selected($urut === 'nama')>Nama</option>
+                <option value="pangkat" @selected($urut === 'pangkat')>Pangkat / Gol.</option>
+                <option value="jenis" @selected($urut === 'jenis')>Jenis keanggotaan</option>
+            </select>
+        </label>
+        <label class="fl">Arah
+            <select class="inp min-w-[150px]" name="arah" x-data x-on:change="$el.form.submit()">
+                <option value="naik" @selected($arah === 'naik')>{{ $namaArah[0] }}</option>
+                <option value="turun" @selected($arah === 'turun')>{{ $namaArah[1] }}</option>
+            </select>
+        </label>
+        @endisset
         <button type="submit" class="btn btn-p h-11">Cari</button>
     </form>
     @isset($jumlah)

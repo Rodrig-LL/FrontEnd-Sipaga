@@ -110,6 +110,44 @@ class PersonelTest extends TestCase
         $this->assertSame(['Ahmad Fauzi', ''], $h->perubahan['nama']);
     }
 
+    public function test_pengurutan_daftar_personel(): void
+    {
+        $this->sebagai();
+        $n = 0;
+        foreach ([['TNI', 'Charlie', 'Mayor Caj (K)'], ['TNI', 'bravo', 'Prada'], ['PNS', 'Delta', 'Penata Muda Tk. I III/b'], ['TNI', 'Alfa', 'Kolonel Caj'],
+            ['PNS', 'Echo', 'Pembina IV/a'], ['TNI', 'Foxtrot', ''], ['PNS', 'Golf', 'Pengatur II/c'], ['TNI', 'Hotel', 'Serka (K)']] as [$jenis, $nama, $pangkat]) {
+            Personel::create(['jenis' => $jenis, 'nama' => $nama, 'pangkat' => $pangkat, 'nrp' => (string) (++$n), 'nrp_asli' => (string) $n]);
+        }
+        $urutan = fn (string $query) => collect($this->get('/personel'.$query)->assertOk()->viewData('hal')->items())->pluck('nama')->all();
+
+        // bawaan = jenis keanggotaan (TNI dulu), lalu nama tanpa membedakan huruf besar/kecil
+        $this->assertSame(['Alfa', 'bravo', 'Charlie', 'Foxtrot', 'Hotel', 'Delta', 'Echo', 'Golf'], $urutan(''));
+        $this->assertSame(['Delta', 'Echo', 'Golf', 'Alfa', 'bravo', 'Charlie', 'Foxtrot', 'Hotel'], $urutan('?urut=jenis&arah=turun'));
+        $this->assertSame(['Alfa', 'bravo', 'Charlie', 'Delta', 'Echo', 'Foxtrot', 'Golf', 'Hotel'], $urutan('?urut=nama'));
+        $this->assertSame(['Hotel', 'Golf', 'Foxtrot', 'Echo', 'Delta', 'Charlie', 'bravo', 'Alfa'], $urutan('?urut=nama&arah=turun'));
+        // pangkat: tertinggi dulu secara bawaan; TNI dan PNS tetap dipisah; pangkat kosong di paling bawah kelompoknya
+        $this->assertSame(['Alfa', 'Charlie', 'Hotel', 'bravo', 'Foxtrot', 'Echo', 'Delta', 'Golf'], $urutan('?urut=pangkat'));
+        $this->assertSame(['bravo', 'Hotel', 'Charlie', 'Alfa', 'Foxtrot', 'Golf', 'Delta', 'Echo'], $urutan('?urut=pangkat&arah=naik'));
+        $this->assertSame(['Alfa', 'Charlie', 'Hotel', 'bravo', 'Foxtrot'], $urutan('?urut=pangkat&jenis=TNI'));
+        $this->assertSame($urutan(''), $urutan('?urut=ngawur&arah=sembarang'));      // nilai tak dikenal diabaikan
+
+        $this->get('/personel?urut=pangkat')->assertSee('Urutkan')->assertSee('Tertinggi dulu');
+        $this->get('/personel?urut=nama')->assertSee('A → Z');
+    }
+
+    public function test_peringkat_pangkat_dan_golongan(): void
+    {
+        $p = fn (string $j, string $t) => \App\Support\Pangkat::peringkat($j, $t);
+
+        $this->assertTrue($p('TNI', 'Prada') < $p('TNI', 'Serda') && $p('TNI', 'Peltu') < $p('TNI', 'Letda') && $p('TNI', 'Kolonel Caj') < $p('TNI', 'Brigjen TNI'));
+        $this->assertSame($p('TNI', 'Kapten Caj'), $p('TNI', 'KAPTEN CAJ (K)'));
+        $this->assertTrue($p('PNS', 'Pengatur II/c') < $p('PNS', 'Penata Muda Tk. I III/b') && $p('PNS', 'Penata III/c') < $p('PNS', 'Pembina IV/a'));
+        $this->assertSame(32, $p('PNS', 'Pengatur Tk. I II/d') + 8);      // II/d = 24
+        $this->assertNull($p('TNI', ''));
+        $this->assertNull($p('TNI', 'Entah'));
+        $this->assertNull($p('PNS', 'Penata'));
+    }
+
     public function test_halaman_riwayat_memuat_semua_jenis_catatan(): void
     {
         $u = $this->sebagai('juru_bayar');

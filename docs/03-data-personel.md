@@ -14,6 +14,18 @@ Model hitung-gaji tiruan (tabel pangkat + `Demo`) **dibuang**: gaji kini datang 
 ## Halaman (`/personel`)
 
 - Daftar dengan pencarian (nama/NRP), saringan jenis, dan status: aktif, keluar, perlu dicek, aktif tanpa bank.
+- **Urutkan** menurut **Nama**, **Pangkat / Gol.**, atau **Jenis keanggotaan**, dengan pilihan arah (parameter `urut` dan `arah`, ikut terbawa saat berpindah halaman):
+
+  | Urutkan | Naik | Turun |
+  |---|---|---|
+  | Nama | A → Z (huruf besar/kecil dianggap sama) | Z → A |
+  | Pangkat / Gol. | Terendah dulu | Tertinggi dulu (**bawaan** untuk pangkat) |
+  | Jenis keanggotaan (**bawaan**) | TNI dulu | PNS dulu |
+
+  Urutan yang sama selalu jatuh ke nama. Peringkat pangkat dibaca oleh `App\Support\Pangkat` dari teks bebasnya: kata pertama untuk TNI
+  (Prada … Jenderal; Pelda dan Peltu di atas Serma, di bawah Letda) dan penulisan golongan untuk PNS (`III/b`, `IV/a`, dst.).
+  Pangkat TNI dan golongan PNS tidak sebanding, jadi keduanya tetap dikelompokkan per jenis (TNI dulu); pangkat kosong atau tak dikenal
+  selalu di paling bawah kelompoknya. Mengganti kriteria mengembalikan arah ke bawaannya.
 - Tambah dan ubah (`SimpanPersonelRequest`): NRP/NIP minimal 5 angka dan unik (`11.2214` dan `112214` dianggap sama);
   bank hanya BRI/BSI/BTN; rekening hanya angka; status keluar wajib tanggal dan alasan.
 - **Keluar bukan hapus**: yang pindah/pensiun ditandai keluar supaya pencocokan DPP tetap mengenalinya.
