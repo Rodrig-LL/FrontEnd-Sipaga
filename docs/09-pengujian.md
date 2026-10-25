@@ -4,17 +4,20 @@
 php artisan test
 ```
 
-Bawaan: SQLite di memori (`phpunit.xml`). **49 tes, 394 pernyataan.** Tes yang butuh Python (proses gaji, impor, potongan)
+Bawaan: SQLite di memori (`phpunit.xml`). **55 tes, 452 pernyataan** (sama di SQLite dan MariaDB 10.4). Tes yang butuh Python (proses gaji, impor, potongan)
 melompat otomatis bila `python/.venv` belum dipasang.
 
-| Berkas | Isi |
-|---|---|
-| `LoginTest` | login, pesan galat seragam, akun nonaktif, sandi ter-hash, batas percobaan |
-| `PersonelTest` | tambah/ubah/keluar/hapus, validasi, riwayat per kolom, trigger riwayat, hak hapus |
-| `ProsesGajiTest` | validasi unggahan, hak akses, jalur penuh dengan Python sungguhan, langkah 2–5, zona waktu |
-| `HasilGajiTest` | Dashboard, Slip, Rekap, CSV, pemilih periode, kop slip di database |
-| `ImporPersonelTest` | pratinjau tanpa mengubah data, terapkan + riwayat, pratinjau basi, bank, berkas bukan nominatif |
-| `PotonganTest` | potongan/pinjaman/pokok/aturan, Daftar Potongan lewat Python, impor potongan dan arisan |
+| Berkas | Tes | Isi |
+|---|:-:|---|
+| `LoginTest` | 9 | login, pesan galat seragam, akun nonaktif, sandi ter-hash, batas percobaan, keluar, URL lama `/dasbor` dialihkan ke `/dashboard`, identitas instansi di halaman masuk |
+| `PersonelTest` | 9 | tambah/ubah/keluar/hapus, validasi, riwayat per kolom, trigger riwayat, hak hapus, daftar dan saringan |
+| `ProsesGajiTest` | 13 | validasi unggahan, hak akses, jalur penuh dengan Python sungguhan, langkah 2–5, sisa folder proses lama, hapus proses (hak akses, tidak bisa saat berjalan kecuali macet, riwayat), stepper langkah 1, zona waktu WIB |
+| `HasilGajiTest` | 7 | Dashboard, Slip, Rekap, CSV, pemilih periode, kop slip di database, halaman tanpa proses |
+| `ImporPersonelTest` | 8 | pratinjau tanpa mengubah data, terapkan + riwayat, pratinjau basi, bank, berkas bukan nominatif, hak akses |
+| `PotonganTest` | 8 | potongan/pinjaman/pokok/aturan, halaman, hapus personel (cascade), Daftar Potongan lewat Python, impor potongan dan arisan |
+
+Perintah `php artisan test --filter <nama>` menjalankan satu tes. Tes yang memakai Python memanggil `jembatan.py`/`jembatan_personel.py` sungguhan
+(sekitar 1–2 detik per proses), jadi seluruh rangkaian selesai dalam beberapa detik.
 
 ## Menjalankan di MariaDB/MySQL
 

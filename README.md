@@ -5,7 +5,7 @@ lalu menghasilkan **pembukuan baru, laporan validasi, Daftar Potongan**, serta s
 Logika gaji dikerjakan kode Python juru bayar (`python/`) lewat sebuah jembatan; Laravel menyimpan data, mengatur hak akses,
 dan menampilkan hasil. Tampilan ringan untuk laptop lama (Firefox ESR 115): HTML dari server, CSS ±37 KB, JS ±44 KB.
 
-**Dokumentasi per bagian ada di [`docs/`](docs/README.md)** — mulai dari sana.
+**Dokumentasi per bagian ada di [`docs/`](docs/README.md)** — mulai dari sana. Cara commit dan push: [`docs/10-git-dan-github.md`](docs/10-git-dan-github.md).
 
 ## Menjalankan
 

@@ -15,6 +15,7 @@ Susunannya mengikuti portal `carakabinum.web.id`: lambang di tengah (tanpa kotak
 `partials/logo` dengan opsi `polos`), lalu **DIREKTORAT AJUDAN JENDERAL** (tebal, hijau tua) dan **TNI ANGKATAN DARAT** (kecil, jarak huruf lebar),
 lalu **SIPAGA** dengan keterangan "Sistem Pengolahan Data dan Slip Gaji", baru kartu formulir masuk. Tulisan sumbernya huruf biasa; huruf besar
 diatur CSS. Di ponsel susunan tetap satu kolom tanpa gulir mendatar.
+Nama lengkap aplikasi ("Sistem Pengolahan Data dan Slip Gaji") baru dipakai di halaman ini; sidebar setelah login masih bertuliskan "Slip Gaji Terpadu".
 
 ## Zona waktu dan bahasa
 
@@ -26,7 +27,7 @@ diatur CSS. Di ponsel susunan tetap satu kolom tanpa gulir mendatar.
 ## Pengaturan kop dan penanda tangan slip (`/pengaturan`)
 
 Dulu di session, sehingga **hilang saat pengguna keluar** (login sungguhan meng-invalidate session). Sekarang tabel `pengaturan`
-(`instansi`, `alamat`, `kota`, `juru`, `juru_nrp`, `lega`), berlaku untuk semua pengguna. Hanya admin dan juru bayar yang bisa mengubah.
+(`instansi`, `alamat`, `kota`, `juru`, `juru_nrp`, `lega`), berlaku untuk semua pengguna. Hanya juru bayar yang bisa mengubah.
 Isian "nama operator" dihapus (nama diambil dari login), begitu pula tombol "kembalikan data uji coba".
 Slip menampilkan `[NAMA INSTANSI]` dan `[Kota]` sampai pengaturan ini diisi.
 
