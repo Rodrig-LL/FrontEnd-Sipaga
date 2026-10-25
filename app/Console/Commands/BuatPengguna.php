@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 
 use function Laravel\Prompts\password;
 
-#[Signature('sipaga:pengguna {username : Nama pengguna untuk masuk} {nama : Nama lengkap} {--peran=operator : admin | juru_bayar | operator}')]
+#[Signature('sipaga:pengguna {username : Nama pengguna untuk masuk} {nama : Nama lengkap} {--peran=juru_bayar : admin | juru_bayar}')]
 #[Description('Buat pengguna baru (kata sandi ditanyakan, tidak ikut riwayat perintah)')]
 class BuatPengguna extends Command
 {

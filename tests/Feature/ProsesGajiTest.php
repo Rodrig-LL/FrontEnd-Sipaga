@@ -42,11 +42,11 @@ class ProsesGajiTest extends TestCase
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true)];
     }
 
-    public function test_operator_tidak_boleh_menjalankan_proses(): void
+    public function test_admin_tidak_bisa_menjalankan_proses(): void
     {
         $this->personel();
 
-        $this->sebagai('operator')->post('/gaji', $this->berkas())->assertForbidden();
+        $this->sebagai('admin')->post('/gaji', $this->berkas())->assertRedirect(route('akun.index'));
         $this->assertSame(0, ProsesGaji::count());
     }
 
@@ -204,8 +204,8 @@ class ProsesGajiTest extends TestCase
         $p = $this->prosesJadi();
         $gagal = $this->prosesJadi('gagal', '');
 
-        $this->sebagai('operator')->get('/gaji')->assertOk()->assertDontSee('Ya, hapus');
-        $this->delete("/gaji/{$p->id}")->assertForbidden();
+        $this->sebagai('admin')->get('/gaji')->assertRedirect(route('akun.index'));
+        $this->delete("/gaji/{$p->id}")->assertRedirect(route('akun.index'));
         $this->assertTrue(ProsesGaji::whereKey($p->id)->exists());
 
         $this->sebagai('juru_bayar')->get('/gaji')->assertOk()->assertSee('Ya, hapus')->assertSee('Unduh dulu');

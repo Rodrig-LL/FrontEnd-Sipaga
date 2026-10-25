@@ -165,7 +165,8 @@ class ImporPersonelTest extends TestCase
 
     public function test_validasi_dan_hak_akses(): void
     {
-        $this->masuk('operator')->post('/personel/impor/baru/nominatif', ['berkas' => $this->nominatif()])->assertForbidden();
+        $this->masuk('admin')->post('/personel/impor/baru/nominatif', ['berkas' => $this->nominatif()])->assertRedirect(route('akun.index'));
+        $this->assertSame(0, ImporPersonel::count());
         $this->masuk()->post('/personel/impor/baru/nominatif', [])->assertSessionHasErrors('berkas');
         $this->post('/personel/impor/baru/nominatif', ['berkas' => [UploadedFile::fake()->create('a.csv', 1, 'text/csv')]])->assertSessionHasErrors('berkas.0');
         $this->post('/personel/impor/baru/ngawur', ['berkas' => $this->nominatif()])->assertNotFound();
@@ -173,7 +174,7 @@ class ImporPersonelTest extends TestCase
 
         $this->masuk()->post('/personel/impor/baru/nominatif', ['berkas' => $this->nominatif()]);
         $i = ImporPersonel::firstOrFail();
-        $this->masuk('operator')->post("/personel/impor/{$i->id}/terapkan")->assertForbidden();
-        $this->get("/personel/impor/{$i->id}")->assertOk();           // operator boleh melihat pratinjau
+        $this->masuk('admin')->post("/personel/impor/{$i->id}/terapkan")->assertRedirect(route('akun.index'));
+        $this->assertSame('pratinjau', $i->refresh()->status);
     }
 }

@@ -24,7 +24,7 @@ class AdminTest extends TestCase
 
     private function akunBaru(array $ganti = []): array
     {
-        return $ganti + ['name' => 'Sersan Budi', 'username' => 'budi.s', 'role' => 'operator', 'sandi' => 'rahasia-123', 'sandi_confirmation' => 'rahasia-123'];
+        return $ganti + ['name' => 'Sersan Budi', 'username' => 'budi.s', 'role' => 'juru_bayar', 'sandi' => 'rahasia-123', 'sandi_confirmation' => 'rahasia-123'];
     }
 
     public function test_admin_masuk_ke_kelola_akun_dan_halaman_kerja_dialihkan(): void
@@ -47,12 +47,10 @@ class AdminTest extends TestCase
 
     public function test_peran_lain_tidak_boleh_masuk_halaman_admin(): void
     {
-        foreach (['juru_bayar', 'operator'] as $peran) {
-            $this->sebagai($peran, ['username' => $peran]);
-            foreach (['/akun', '/akun/baru', '/log'] as $url) $this->get($url)->assertForbidden();
-            $this->post('/akun', $this->akunBaru())->assertForbidden();
-        }
-        $this->assertSame(2, User::count());
+        $this->sebagai('juru_bayar');
+        foreach (['/akun', '/akun/baru', '/log'] as $url) $this->get($url)->assertForbidden();
+        $this->post('/akun', $this->akunBaru())->assertForbidden();
+        $this->assertSame(1, User::count());
     }
 
     public function test_menu_juru_bayar_tidak_menampilkan_menu_admin_dan_memuat_nama_lengkap(): void
@@ -76,7 +74,7 @@ class AdminTest extends TestCase
 
         $this->post('/akun', $this->akunBaru())->assertRedirect(route('akun.index'));
         $u = User::where('username', 'budi.s')->firstOrFail();
-        $this->assertSame('operator', $u->role);
+        $this->assertSame('juru_bayar', $u->role);
         $this->assertTrue($u->aktif);
         $this->assertNotSame('rahasia-123', $u->password);       // tersimpan sebagai hash
 
@@ -102,6 +100,7 @@ class AdminTest extends TestCase
         $this->post('/akun', $this->akunBaru(['username' => 'dipakai']))->assertSessionHasErrors('username');
         $this->post('/akun', $this->akunBaru(['username' => 'ada spasi']))->assertSessionHasErrors('username');
         $this->post('/akun', $this->akunBaru(['role' => 'raja']))->assertSessionHasErrors('role');
+        $this->post('/akun', $this->akunBaru(['role' => 'operator']))->assertSessionHasErrors('role');      // peran Operator sudah dihapus
         $this->post('/akun', $this->akunBaru(['sandi' => 'pendek', 'sandi_confirmation' => 'pendek']))->assertSessionHasErrors('sandi');
         $this->post('/akun', $this->akunBaru(['sandi_confirmation' => 'beda-sekali']))->assertSessionHasErrors('sandi');
         $this->assertSame(2, User::count());
@@ -110,15 +109,15 @@ class AdminTest extends TestCase
     public function test_ubah_akun_ganti_sandi_peran_dan_nonaktifkan(): void
     {
         $this->sebagai();
-        $u = User::factory()->create(['username' => 'ani', 'role' => 'operator', 'aktif' => true, 'password' => 'sandi-lama-1']);
+        $u = User::factory()->create(['username' => 'ani', 'role' => 'juru_bayar', 'aktif' => true, 'password' => 'sandi-lama-1']);
 
-        $this->put("/akun/{$u->id}", ['name' => 'Ani Baru', 'username' => 'ani', 'role' => 'juru_bayar', 'sandi' => 'sandi-baru-22', 'sandi_confirmation' => 'sandi-baru-22'])
+        $this->put("/akun/{$u->id}", ['name' => 'Ani Baru', 'username' => 'ani', 'role' => 'admin', 'sandi' => 'sandi-baru-22', 'sandi_confirmation' => 'sandi-baru-22'])
             ->assertRedirect(route('akun.index'));
         $u->refresh();
-        $this->assertSame(['Ani Baru', 'juru_bayar', false], [$u->name, $u->role, $u->aktif]);   // kotak "aktif" tidak dicentang -> nonaktif
+        $this->assertSame(['Ani Baru', 'admin', false], [$u->name, $u->role, $u->aktif]);   // kotak "aktif" tidak dicentang -> nonaktif
         $this->assertTrue(\Hash::check('sandi-baru-22', $u->password));
 
-        $this->put("/akun/{$u->id}", ['name' => 'Ani Baru', 'username' => 'ani', 'role' => 'juru_bayar', 'aktif' => '1'])->assertRedirect();
+        $this->put("/akun/{$u->id}", ['name' => 'Ani Baru', 'username' => 'ani', 'role' => 'admin', 'aktif' => '1'])->assertRedirect();
         $this->assertTrue($u->refresh()->aktif);
         $this->assertTrue(\Hash::check('sandi-baru-22', $u->password));      // sandi kosong = tidak diganti
     }
@@ -127,7 +126,7 @@ class AdminTest extends TestCase
     {
         $admin = $this->sebagai();
 
-        $this->put("/akun/{$admin->id}", ['name' => 'Admin', 'username' => 'admin1', 'role' => 'operator'])->assertRedirect();
+        $this->put("/akun/{$admin->id}", ['name' => 'Admin', 'username' => 'admin1', 'role' => 'juru_bayar'])->assertRedirect();
         $admin->refresh();
         $this->assertSame('admin', $admin->role);
         $this->assertTrue($admin->aktif);
@@ -146,7 +145,7 @@ class AdminTest extends TestCase
 
     public function test_log_mencatat_masuk_gagal_masuk_dan_keluar_tanpa_kata_sandi(): void
     {
-        User::factory()->create(['username' => 'op', 'role' => 'operator', 'aktif' => true, 'password' => 'sandi-benar-1', 'name' => 'Pak Op']);
+        User::factory()->create(['username' => 'op', 'role' => 'juru_bayar', 'aktif' => true, 'password' => 'sandi-benar-1', 'name' => 'Pak Op']);
 
         $this->post('/masuk', ['pengguna' => 'op', 'sandi' => 'salah-total']);
         $this->post('/masuk', ['pengguna' => 'op', 'sandi' => 'sandi-benar-1']);
@@ -162,17 +161,17 @@ class AdminTest extends TestCase
 
     public function test_pekerjaan_dan_perubahan_akun_tercatat_di_log_yang_dibaca_admin(): void
     {
-        $this->sebagai('operator', ['name' => 'Operator Satu']);
+        $this->sebagai('juru_bayar', ['name' => 'Juru Satu']);
         $this->post('/personel', ['jenis' => 'TNI', 'nama' => 'Ahmad Fauzi', 'nrp_asli' => '11112214', 'status' => 'aktif'])->assertRedirect();
         $this->assertSame('personel_tambah', LogAktivitas::latest('id')->first()->aksi);
 
         $this->sebagai();
         $this->post('/akun', $this->akunBaru());
-        $this->put('/akun/'.User::where('username', 'budi.s')->value('id'), ['name' => 'Sersan Budi', 'username' => 'budi.s', 'role' => 'juru_bayar', 'aktif' => '1']);
+        $this->put('/akun/'.User::where('username', 'budi.s')->value('id'), ['name' => 'Sersan Budi', 'username' => 'budi.s', 'role' => 'admin', 'aktif' => '1']);
 
-        $this->get('/log')->assertOk()->assertSee('Personel ditambah')->assertSee('Ahmad Fauzi')->assertSee('Operator Satu')
-            ->assertSee('Akun ditambah')->assertSee('Akun diubah')->assertSee('peran Operator → Juru Bayar');
-        $this->get('/log?aksi=personel_tambah')->assertOk()->assertSee('Ahmad Fauzi')->assertDontSee('peran Operator');
+        $this->get('/log')->assertOk()->assertSee('Personel ditambah')->assertSee('Ahmad Fauzi')->assertSee('Juru Satu')
+            ->assertSee('Akun ditambah')->assertSee('Akun diubah')->assertSee('peran Juru Bayar → Admin');
+        $this->get('/log?aksi=personel_tambah')->assertOk()->assertSee('Ahmad Fauzi')->assertDontSee('peran Juru Bayar');
         $this->get('/log?q=budi')->assertOk()->assertSee('Sersan Budi')->assertDontSee('Ahmad Fauzi');
         $this->get('/log?aksi=ngawur')->assertOk()->assertSee('Ahmad Fauzi');          // aksi tak dikenal diabaikan
     }

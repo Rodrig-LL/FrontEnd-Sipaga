@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         if (! app()->environment('local')) return;
 
-        foreach ([['admin', 'Admin SIPAGA', 'admin'], ['jurubayar', 'Juru Bayar', 'juru_bayar'], ['operator', 'Operator', 'operator']] as [$u, $nama, $peran]) {
+        foreach ([['admin', 'Admin SIPAGA', 'admin'], ['jurubayar', 'Juru Bayar', 'juru_bayar']] as [$u, $nama, $peran]) {
             User::updateOrCreate(['username' => $u], ['name' => $nama, 'role' => $peran, 'aktif' => true, 'password' => 'password']);
         }
     }

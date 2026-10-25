@@ -16,7 +16,7 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    public const PERAN = ['admin' => 'Admin', 'juru_bayar' => 'Juru Bayar', 'operator' => 'Operator'];
+    public const PERAN = ['admin' => 'Admin', 'juru_bayar' => 'Juru Bayar'];
 
     /**
      * Get the attributes that should be cast.

@@ -35,7 +35,7 @@
             <label class="fl">Peran
                 <select name="role" class="inp w-full text-base {{ $e('role') ? 'bad' : '' }}" @disabled($diri)>
                     @foreach (\App\Models\User::PERAN as $kode => $label)
-                        <option value="{{ $kode }}" @selected(old('role', $akun?->role ?? 'operator') === $kode)>{{ $label }}</option>
+                        <option value="{{ $kode }}" @selected(old('role', $akun?->role ?? 'juru_bayar') === $kode)>{{ $label }}</option>
                     @endforeach
                 </select>
                 @if ($diri)<input type="hidden" name="role" value="{{ $akun->role }}">@endif
@@ -43,8 +43,7 @@
             </label>
         </div>
         <p class="muted mt-3.5 leading-normal">
-            <b>Admin</b>: hanya kelola akun dan lihat log aktivitas. <b>Juru Bayar</b>: seluruh pekerjaan gaji dan personel.
-            <b>Operator</b>: melihat data dan mencatat personel, tidak bisa menjalankan proses gaji, mengimpor, menghapus, atau mengubah pengaturan.
+            <b>Admin</b>: hanya kelola akun dan lihat log aktivitas. <b>Juru Bayar</b>: seluruh pekerjaan gaji dan data personel.
         </p>
     </section>
 

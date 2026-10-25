@@ -133,7 +133,7 @@ class HasilGajiTest extends TestCase
         $this->prosesNyata();
         $semua = ['instansi' => 'DITAJENAD', 'alamat' => 'Jl. Contoh 1', 'kota' => 'Jakarta', 'juru' => 'Mayor Budi', 'juru_nrp' => '11112233'];
 
-        $this->masuk('operator')->post('/pengaturan', $semua)->assertForbidden();
+        $this->masuk('admin')->post('/pengaturan', $semua)->assertRedirect(route('akun.index'));
         $this->assertSame([], Pengaturan::semua());
 
         $this->masuk('juru_bayar')->post('/pengaturan', $semua + ['lega' => '1'])->assertRedirect();
@@ -141,6 +141,6 @@ class HasilGajiTest extends TestCase
         $this->assertSame('DITAJENAD', Pengaturan::ambil('instansi'));
 
         $n = array_key_first(DataGaji::slip());
-        $this->masuk('operator')->get("/slip/$n")->assertOk()->assertSee('DITAJENAD')->assertSee('Mayor Budi')->assertSee('Jakarta');
+        $this->masuk()->get("/slip/$n")->assertOk()->assertSee('DITAJENAD')->assertSee('Mayor Budi')->assertSee('Jakarta');
     }
 }

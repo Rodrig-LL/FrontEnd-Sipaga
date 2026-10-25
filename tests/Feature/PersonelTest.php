@@ -14,7 +14,7 @@ class PersonelTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function sebagai(string $peran = 'operator'): static
+    private function sebagai(string $peran = 'juru_bayar'): static
     {
         return $this->actingAs(User::factory()->create(['role' => $peran, 'name' => 'Pak '.$peran]));
     }
@@ -100,7 +100,7 @@ class PersonelTest extends TestCase
         $this->sebagai()->post('/personel', $this->data());
         $p = Personel::firstOrFail();
 
-        $this->sebagai('operator')->delete("/personel/{$p->id}")->assertForbidden();
+        $this->sebagai('admin')->delete("/personel/{$p->id}")->assertRedirect(route('akun.index'));
         $this->assertSame(1, Personel::count());
 
         $this->sebagai('juru_bayar')->delete("/personel/{$p->id}")->assertRedirect(route('personel.index'));

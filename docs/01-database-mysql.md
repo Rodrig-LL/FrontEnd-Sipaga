@@ -4,7 +4,7 @@
 
 - Bawaan proyek: **SQLite** (`DB_CONNECTION=sqlite`), cukup untuk mencoba.
 - Dipakai sekarang: **MariaDB 10.4.32** dari XAMPP (`/opt/lampp`), lewat driver `mysql` Laravel.
-- Seluruh tes lulus di **kedua** database (69 tes, 558 pernyataan).
+- Seluruh tes lulus di **kedua** database (69 tes, 565 pernyataan).
 
 ## Cocok dengan Laravel 13?
 
@@ -51,7 +51,7 @@ Data uji di SQLite **tidak ikut pindah** (data sintetis; buat ulang lewat impor 
 
 | Tabel | Isi |
 |---|---|
-| `users` | pengguna: `username`, `role` (admin/juru_bayar/operator), `aktif` |
+| `users` | pengguna: `username`, `role` (admin/juru_bayar), `aktif` |
 | `sessions`, `cache`, `jobs` | bawaan Laravel (sesi dan antrean di database) |
 | `personel` | master personel (selaras `personel_db.py` Python) |
 | `riwayat` | catatan perubahan; **trigger** menolak UPDATE/DELETE |

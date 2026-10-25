@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('username', 60)->unique();
             $table->string('email')->nullable()->unique();
-            $table->string('role', 20)->default('operator');   // admin | operator | juru_bayar
+            $table->string('role', 20)->default('juru_bayar');   // admin | juru_bayar
             $table->boolean('aktif')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

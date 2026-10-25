@@ -7,7 +7,7 @@ Hak aksesnya ada di [02-autentikasi-dan-peran.md](02-autentikasi-dan-peran.md).
 
 `AkunController`, view `akun/index` dan `akun/form`. Dilindungi `can:kelola-akun`; peran lain mendapat 403.
 
-- **Tambah akun**: nama lengkap, nama pengguna (huruf, angka, `.` `_` `-`; unik), peran, kata sandi (minimal 8 karakter, diulang dua kali).
+- **Tambah akun**: nama lengkap, nama pengguna (huruf, angka, `.` `_` `-`; unik), peran (Admin atau Juru Bayar), kata sandi (minimal 8 karakter, diulang dua kali).
 - **Ubah akun**: nama, nama pengguna, peran, status aktif, dan kata sandi baru. Kata sandi dikosongkan = tidak diganti.
 - Akun **tidak dihapus**, hanya dinonaktifkan, supaya namanya di log dan riwayat tetap bisa ditelusuri.
 - Admin **tidak bisa menurunkan atau menonaktifkan akunnya sendiri** (kolomnya dikunci di form dan diabaikan di server).

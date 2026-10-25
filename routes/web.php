@@ -38,7 +38,7 @@ Route::middleware(['auth', 'aktif'])->group(function () {
     });
 });
 
-// Halaman kerja: untuk Juru Bayar dan Operator; Admin dialihkan ke kelola akun.
+// Halaman kerja: untuk Juru Bayar; Admin dialihkan ke kelola akun.
 Route::middleware(['auth', 'aktif', 'operasional'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/periode', [DashboardController::class, 'periode'])->name('periode');

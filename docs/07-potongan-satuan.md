@@ -22,7 +22,7 @@ dan **harus sama** dengan `potongan.JENIS` di Python (kode dipakai di dua sisi).
 - **Pinjaman**: semua pinjaman dengan keadaan pada periode proses ("cicilan ke-4 dari 12", "tenor belum diisi", "selesai").
 - **Aturan**: sisa gaji minimal (YBS), nominal simpanan pokok bawaan, batas pinjam per pemberi (maks % gaji, sisa gaji minimal, tenor maks).
 - Ringkasan **Daftar Potongan terakhir**: orang dihitung, tunggakan koperasi, gaji masih minus, MASS DEBET, dan peringatan.
-- Ubah/catat: hanya juru bayar (`kelola-potongan`); operator hanya melihat. Setiap perubahan tercatat di riwayat.
+- Ubah/catat: hanya juru bayar (`kelola-potongan`). Setiap perubahan tercatat di riwayat.
 
 Isi awal dari pembukuan bulan lalu dan arisan lewat impor Excel ([04-impor-excel.md](04-impor-excel.md)).
 

@@ -53,7 +53,8 @@ class PotonganTest extends TestCase
     public function test_simpan_potongan_tetap_dengan_riwayat(): void
     {
         $budi = $this->orang('Budi', '21960123456789');
-        $this->masuk('operator')->post("/potongan/orang/{$budi->id}", ['potongan' => ['TWP' => '150.000']])->assertForbidden();
+        $this->masuk('admin')->post("/potongan/orang/{$budi->id}", ['potongan' => ['TWP' => '150.000']])->assertRedirect(route('akun.index'));      // Admin tidak mengurus potongan
+        $this->assertSame(0, DB::table('potongan')->count());
 
         $this->masuk()->post("/potongan/orang/{$budi->id}", ['potongan' => ['TWP' => 'Rp 150.000', 'SIMP_WAJIB' => '50000', 'PMI' => '']])->assertRedirect();
         $this->assertEquals(['TWP' => 150000, 'SIMP_WAJIB' => 50000], DB::table('potongan')->where('personel_id', $budi->id)->pluck('nominal', 'kode')->map(fn ($x) => (int) $x)->all());
@@ -109,18 +110,18 @@ class PotonganTest extends TestCase
         $this->assertFalse(DB::table('pokok')->where('personel_id', $budi->id)->exists());
 
         $this->post('/potongan/aturan', ['sisa_ybs' => '', 'batas' => ['BJB' => ['persen' => '150']]])->assertSessionHasErrors(['sisa_ybs', 'batas.BJB.persen']);
-        $this->masuk('operator')->post('/potongan/aturan', $aturan)->assertForbidden();
+        $this->masuk('admin')->post('/potongan/aturan', $aturan)->assertRedirect(route('akun.index'));
     }
 
     public function test_halaman_potongan_tampil(): void
     {
         $budi = $this->orang('Budi', '21960123456789');
         Pinjaman::create(['personel_id' => $budi->id, 'pemberi' => 'LURJA', 'cicilan' => 500000, 'mulai' => '2026-09', 'tenor' => null, 'status' => 'aktif']);
-        $this->masuk('operator');
+        $this->masuk();
 
         $this->get('/potongan')->assertOk()->assertSee('Budi')->assertSee('Daftar Potongan dibuat setiap proses gaji');
         $this->get('/potongan?lihat=pinjaman')->assertOk()->assertSee('belum punya tenor')->assertSee('LURJA');
-        $this->get('/potongan?lihat=aturan')->assertOk()->assertSee('Batas pinjam per pemberi')->assertSee('Hanya Juru Bayar');
+        $this->get('/potongan?lihat=aturan')->assertOk()->assertSee('Batas pinjam per pemberi');
         $this->get("/potongan/orang/{$budi->id}")->assertOk()->assertSee('Potongan tetap per bulan')->assertSee('LURJA');
         $this->get('/potongan/orang/9999')->assertNotFound();
     }
