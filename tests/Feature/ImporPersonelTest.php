@@ -9,14 +9,15 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Tests\Concerns\ButuhFixture;
 use Tests\TestCase;
 
 /** Impor nominatif dan bank/rekening lewat jembatan Python, memakai berkas sintetis di tests/fixtures. */
 class ImporPersonelTest extends TestCase
 {
+    use ButuhFixture;
     use RefreshDatabase;
 
-    private const FIX = __DIR__.'/../fixtures/';
 
     protected function setUp(): void
     {
@@ -33,7 +34,7 @@ class ImporPersonelTest extends TestCase
 
     private function xlsx(string $path, ?string $nama = null): UploadedFile
     {
-        return new UploadedFile(self::FIX.$path, $nama ?? basename($path), 'application/octet-stream', null, true);
+        return new UploadedFile($this->fixture($path), $nama ?? basename($path), 'application/octet-stream', null, true);
     }
 
     private function nominatif(): array

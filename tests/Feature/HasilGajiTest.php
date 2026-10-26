@@ -10,14 +10,15 @@ use App\Support\DataGaji;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Tests\Concerns\ButuhFixture;
 use Tests\TestCase;
 
 /** Dashboard, Slip, dan Rekap membaca hasil proses gaji nyata (Python dengan data sintetis di tests/fixtures/dpp). */
 class HasilGajiTest extends TestCase
 {
+    use ButuhFixture;
     use RefreshDatabase;
 
-    private const FIX = __DIR__.'/../fixtures/dpp/';
 
     protected function setUp(): void
     {
@@ -36,10 +37,10 @@ class HasilGajiTest extends TestCase
     {
         if (! is_file(config('sipaga.python'))) $this->markTestSkipped('Python jembatan belum dipasang (python/.venv).');
         Personel::create(['jenis' => 'TNI', 'nama' => 'Ahmad Fauzi', 'nrp' => '11112214', 'nrp_asli' => '11112214', 'bank' => 'BRI']);
-        $pdf = fn ($n) => new UploadedFile(self::FIX.$n, $n, 'application/pdf', null, true);
+        $pdf = fn ($n) => new UploadedFile($this->fixture('dpp/'.$n), $n, 'application/pdf', null, true);
         $this->masuk()->post('/gaji', [
             'pdf' => [$pdf('DPP_GOL_II_NOVEMBER_2026.pdf'), $pdf('DPP_GOL_III_NOVEMBER_2026.pdf'), $pdf('DPP_SUSULAN_NOVEMBER_2026.pdf')],
-            'buku' => new UploadedFile(self::FIX.'PEMBUKUAN_GAJI_BRI_BLN_OKTOBER_2026.xlsx', 'PEMBUKUAN_GAJI_BRI_BLN_OKTOBER_2026.xlsx', 'application/octet-stream', null, true),
+            'buku' => new UploadedFile($this->fixture('dpp/PEMBUKUAN_GAJI_BRI_BLN_OKTOBER_2026.xlsx'), 'PEMBUKUAN_GAJI_BRI_BLN_OKTOBER_2026.xlsx', 'application/octet-stream', null, true),
         ]);
         DataGaji::lupakan();
 

@@ -22,5 +22,5 @@ Database bawaan SQLite; MySQL/MariaDB: [`docs/01-database-mysql.md`](docs/01-dat
 
 ## Catatan
 
-- Jangan memasukkan data asli (DPP, nominatif, pembukuan) ke repo. Berkas uji di `tests/fixtures/` sintetis.
+- Jangan memasukkan data asli (DPP, nominatif, pembukuan) ke repo. `tests/fixtures/` sengaja tidak ikut git (tes yang membutuhkannya dilompati).
 - `python/` adalah salinan kode aplikasi Python juru bayar (tanpa data); `python/jembatan*.py` adalah satu-satunya tambahan.

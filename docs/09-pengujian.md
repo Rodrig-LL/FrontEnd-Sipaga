@@ -4,8 +4,8 @@
 php artisan test
 ```
 
-Bawaan: SQLite di memori (`phpunit.xml`). **75 tes, 640 pernyataan** (sama di SQLite dan MariaDB 10.4). Tes yang butuh Python (proses gaji, impor, potongan)
-melompat otomatis bila `python/.venv` belum dipasang.
+Bawaan: SQLite di memori (`phpunit.xml`). **75 tes**; tanpa berkas uji hanya **50 yang berjalan (400 pernyataan)** dan **25 dilompati** (di SQLite dan MariaDB 10.4 sama). Tes yang butuh Python
+(proses gaji, impor, potongan) melompat otomatis bila `python/.venv` belum dipasang, atau bila berkas uji di `tests/fixtures/` tidak ada.
 
 | Berkas | Tes | Isi |
 |---|:-:|---|
@@ -34,6 +34,15 @@ Variabel lingkungan menang atas `<env>` di `phpunit.xml`. Tes memakai `RefreshDa
 
 ## Data uji
 
-`tests/fixtures/` seluruhnya **sintetis**: PDF DPP contoh dan pembukuan contoh (`dpp/`, dari `CONTOH_UJI` aplikasi Python), serta nominatif,
-daftar arisan, dan pembukuan potongan buatan (`impor/`). Angka acuan: 10 anggota, total dibayarkan Rp 70.998.220, Rp 42.167.540 yang cocok
-dengan pembukuan, 14 temuan tinggi (sama dengan dokumen konteks juru bayar).
+Berkas uji **tidak lagi disimpan di repo** (`/tests/fixtures/` ada di `.gitignore`): isinya data karangan (nama dan NRP rekaan) yang sebelumnya
+muncul di aplikasi bila dipakai menjalankan proses. Tes yang membutuhkannya (trait `Tests\Concerns\ButuhFixture`) dilompati dengan pesan
+"Berkas uji tidak ada". Berkas lamanya masih ada di riwayat git; untuk menjalankan seluruh tes, ambil lagi **hanya di komputer pengembang**:
+
+```bash
+git checkout 91bfc83 -- tests/fixtures && git reset -q tests/fixtures
+```
+
+(`reset` menjaganya tetap tidak masuk commit.) Susunannya: `dpp/` (tiga PDF DPP contoh dan satu pembukuan contoh, dari `CONTOH_UJI` aplikasi Python) dan
+`impor/` (nominatif militer/PNS, daftar arisan, pembukuan potongan, dan satu berkas bukan-nominatif). Angka acuan dengan berkas itu: 10 anggota, total
+dibayarkan Rp 70.998.220, Rp 42.167.540 yang cocok dengan pembukuan, 14 temuan tinggi (sama dengan dokumen konteks juru bayar).
+Jangan taruh data asli di folder itu.

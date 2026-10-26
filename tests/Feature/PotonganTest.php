@@ -13,14 +13,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Tests\Concerns\ButuhFixture;
 use Tests\TestCase;
 
 /** Potongan satuan: penyimpanan dengan riwayat, hitungan Daftar Potongan lewat Python, dan impor dari pembukuan/arisan. */
 class PotonganTest extends TestCase
 {
+    use ButuhFixture;
     use RefreshDatabase;
 
-    private const FIX = __DIR__.'/../fixtures/';
 
     protected function setUp(): void
     {
@@ -47,7 +48,7 @@ class PotonganTest extends TestCase
 
     private function xlsx(string $path, ?string $nama = null): UploadedFile
     {
-        return new UploadedFile(self::FIX.$path, $nama ?? basename($path), 'application/octet-stream', null, true);
+        return new UploadedFile($this->fixture($path), $nama ?? basename($path), 'application/octet-stream', null, true);
     }
 
     public function test_simpan_potongan_tetap_dengan_riwayat(): void
@@ -150,7 +151,7 @@ class PotonganTest extends TestCase
         Pinjaman::create(['personel_id' => $budi->id, 'pemberi' => 'KOPERASI', 'cicilan' => 800000, 'mulai' => '2026-08', 'tenor' => 12, 'status' => 'aktif']);
         Pinjaman::create(['personel_id' => $dewi->id, 'pemberi' => 'KOPERASI', 'cicilan' => 5000000, 'mulai' => '2026-06', 'tenor' => null, 'status' => 'aktif']);
 
-        $pdf = fn ($n) => new UploadedFile(self::FIX.'dpp/'.$n, $n, 'application/pdf', null, true);
+        $pdf = fn ($n) => new UploadedFile($this->fixture('dpp/'.$n), $n, 'application/pdf', null, true);
         $this->masuk()->post('/gaji', ['pdf' => [$pdf('DPP_GOL_II_NOVEMBER_2026.pdf'), $pdf('DPP_GOL_III_NOVEMBER_2026.pdf'), $pdf('DPP_SUSULAN_NOVEMBER_2026.pdf')],
             'buku' => $this->xlsx('dpp/PEMBUKUAN_GAJI_BRI_BLN_OKTOBER_2026.xlsx')]);
         $p = ProsesGaji::firstOrFail();

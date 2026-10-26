@@ -16,7 +16,7 @@ Remote: `origin` → `https://github.com/Rodrig-LL/FrontEnd-Sipaga.git` (publik,
 
 `.env` (kata sandi database dan `APP_KEY`), data asli juru bayar (DPP, nominatif, pembukuan, `OTOMASI_GAJI_DPP.zip`, `personel.db`), `*.sqlite`,
 `python/.venv`, `storage/` (berkas unggahan dan hasil proses), dan `public/build`. Repo ini **publik**: semua yang di-push terlihat siapa pun,
-termasuk email penulis commit. Berkas uji di `tests/fixtures/` seluruhnya sintetis.
+termasuk email penulis commit. `tests/fixtures/` ada di `.gitignore` (berkas uji tidak disimpan di repo).
 
 ## Push lewat HTTPS dengan token
 

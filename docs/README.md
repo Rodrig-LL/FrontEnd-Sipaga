@@ -38,7 +38,7 @@ Di server, buat pengguna dengan `php artisan sipaga:pengguna <username> "<Nama L
 
 - **Data asli.** `OTOMASI_GAJI_DPP.zip` memuat data pribadi personel dan **tidak boleh** ikut ter-commit
   (di mesin pengembang sudah di `.git/info/exclude`). `python/` hanya berisi kode, tanpa `data/`.
-- Berkas uji di `tests/fixtures/` seluruhnya **sintetis** (nama karangan).
+- Berkas uji (`tests/fixtures/`, data karangan) **tidak disimpan di repo**; tes yang membutuhkannya dilompati. Lihat [09-pengujian.md](09-pengujian.md).
 - Berkas yang diunggah ke proses gaji disimpan di `storage/app/private/proses/` (tidak ikut git).
   Berkas impor Excel dibuang segera setelah dibaca.
 

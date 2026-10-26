@@ -8,13 +8,14 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Tests\Concerns\ButuhFixture;
 use Tests\TestCase;
 
 class ProsesGajiTest extends TestCase
 {
+    use ButuhFixture;
     use RefreshDatabase;
 
-    private const FIX = __DIR__.'/../fixtures/dpp/';
 
     protected function setUp(): void
     {
@@ -35,10 +36,10 @@ class ProsesGajiTest extends TestCase
 
     private function berkas(): array
     {
-        $pdf = fn ($n) => new UploadedFile(self::FIX.$n, $n, 'application/pdf', null, true);
+        $pdf = fn ($n) => new UploadedFile($this->fixture('dpp/'.$n), $n, 'application/pdf', null, true);
 
         return ['pdf' => [$pdf('DPP_GOL_II_NOVEMBER_2026.pdf'), $pdf('DPP_GOL_III_NOVEMBER_2026.pdf'), $pdf('DPP_SUSULAN_NOVEMBER_2026.pdf')],
-            'buku' => new UploadedFile(self::FIX.'PEMBUKUAN_GAJI_BRI_BLN_OKTOBER_2026.xlsx', 'PEMBUKUAN_GAJI_BRI_BLN_OKTOBER_2026.xlsx',
+            'buku' => new UploadedFile($this->fixture('dpp/PEMBUKUAN_GAJI_BRI_BLN_OKTOBER_2026.xlsx'), 'PEMBUKUAN_GAJI_BRI_BLN_OKTOBER_2026.xlsx',
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true)];
     }
 
@@ -159,7 +160,7 @@ class ProsesGajiTest extends TestCase
     {
         if (! is_file(config('sipaga.python'))) $this->markTestSkipped('Python jembatan belum dipasang (python/.venv).');
         $this->personel();
-        $fix = fn ($n) => file_get_contents(self::FIX.$n);
+        $fix = fn ($n) => file_get_contents($this->fixture('dpp/'.$n));
         $berkas = ['DPP_GOL_II_NOVEMBER_2026.pdf', 'DPP_GOL_III_NOVEMBER_2026.pdf', 'DPP_SUSULAN_NOVEMBER_2026.pdf'];
         $p = ProsesGaji::create(['status' => 'menunggu', 'berkas' => ['pdf' => $berkas, 'buku' => 'PEMBUKUAN_GAJI_BRI_BLN_OKTOBER_2026.xlsx']]);
         foreach (array_merge($berkas, ['PEMBUKUAN_GAJI_BRI_BLN_OKTOBER_2026.xlsx']) as $n) Storage::disk('local')->put($p->folder('masuk/'.$n), $fix($n));
