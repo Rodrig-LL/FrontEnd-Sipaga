@@ -9,7 +9,7 @@ Satu berkas per bagian yang berubah. Baca urutannya bila baru pertama kali:
 | Berkas | Bagian |
 |---|---|
 | [01-database-mysql.md](01-database-mysql.md) | Database MySQL/MariaDB (XAMPP), skema, dan cara pindah dari SQLite |
-| [02-autentikasi-dan-peran.md](02-autentikasi-dan-peran.md) | Login sungguhan, tiga peran, hak akses |
+| [02-autentikasi-dan-peran.md](02-autentikasi-dan-peran.md) | Login sungguhan, dua peran (Admin dan Juru Bayar), hak akses |
 | [03-data-personel.md](03-data-personel.md) | Data Personel, riwayat perubahan yang tak bisa diubah |
 | [04-impor-excel.md](04-impor-excel.md) | Impor nominatif, bank/rekening, potongan, dan arisan (dengan pratinjau) |
 | [05-proses-gaji-dan-jembatan-python.md](05-proses-gaji-dan-jembatan-python.md) | Proses gaji 5 langkah dan jembatan Laravel ke Python |
@@ -49,3 +49,4 @@ Di server, buat pengguna dengan `php artisan sipaga:pengguna <username> "<Nama L
 - Pembaca DPP PNS (di sisi Python), sehingga slip, laporan, dan dashboard masih TNI saja.
 - Pembacaan PDF hasil scan (OCR) hanya jalan di Windows; di Linux hanya PDF bertekslah.
 - Belum diuji dengan berkas DPP, nominatif, pembukuan, dan arisan asli.
+- Berkas uji karangan tidak lagi di repo, sehingga 25 tes jembatan Python dilompati kecuali berkasnya diambil lagi ([09-pengujian.md](09-pengujian.md)).
